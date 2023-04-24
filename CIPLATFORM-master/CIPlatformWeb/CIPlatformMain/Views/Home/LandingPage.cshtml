@@ -1,0 +1,667 @@
+﻿@using CIPlatformMain.Entities.ViewModel
+@*@model X.PagedList.IPagedList<Mission>
+
+    @using CIPlatformMain.Entities.Models;
+    @using X.PagedList.Mvc.Core;*@
+@model CIPlatformMain.Entities.ViewModel.Missiondata
+@{
+    ViewData["Title"] = "LandingPage";
+}
+<partial name="_navigation" />
+
+
+
+@{
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+}
+
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/Landingpage.css" asp-append-version="true" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    @{
+        if (TempData["logintoast"] != null)
+        {
+            <script>
+                const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+
+                Toast.fire({
+                icon: 'success',
+                title: 'Login Successful'
+                })
+            </script>
+
+
+        }
+
+    }
+    <partial name="_Filterbar" />
+
+
+
+    <div class="container-fluid w-75 buttons justify-content-end  mt-3">
+        <h4 style="margin-right:auto">Explore @ViewData["MissionCount"] Missions</h4>
+        <button class="btn  dropdown-toggle me-3 mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Sort-By
+        </button>
+        <ul class="dropdown-menu ">
+            <li value=1 class="dropdown-item sortvalue">NewestFirst</li>
+            <li value=2 class="dropdown-item sortvalue">OldestFirst</li>
+            <li value=3 class="dropdown-item sortvalue">ByStartDate</li>
+            <li value=4 class="dropdown-item sortvalue">ByEndDate</li>
+            <li value=5 class="dropdown-item sortvalue">Favrouites</li>
+
+        </ul>
+        <div class="list me-4" id="list-icon1"><img src="~/images/list.png" /></div>
+        <div class="grid " id="grid-icon"><img src="~/images/grid.png" /></div>
+
+    </div>
+
+    <div id="card-refresh">
+
+        <div class="card-cont container-fluid w-75" id="card-cont">
+
+
+            
+
+            <div class="row">
+                @foreach (var mission in Model.Missions)
+                {
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 mb-3 shadow-sm shadow" id="card-list">
+                        <div class="mission-img">
+
+                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
+                            {
+                                <div class=" p-1 px-2" style="position:absolute;left:0px; top:5%; border-radius:0px 15px 15px 0px; background-color:forestgreen;">
+                                    Applied
+                                </div>
+                            }@if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "PENDING" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
+                            {
+
+                                <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; border-radius:0px 15px 15px 0px; background-color:grey;">
+                                    Pending
+                                </div>
+                            }
+                            <div class="rounded-pill p-1" id="location" style="position:absolute;right:8px; top:4% ">
+                                <img src="/images/pin.png" />&nbsp;<span>@mission.City.Name</span>
+                            </div>
+
+
+
+                            @if (Model.FavMission.Select(f => f.MissionId).ToList().Contains(mission.MissionId))
+                            {
+                                    <div class="rounded-circle p-2 location" onclick="removefav(2,@mission.MissionId)" id="@mission.MissionId" style="position:absolute;right:8px; top:33%">
+                                        <i class="fa fa-heart" style="font-size:23px;color:red;vertical-align:bottom;"></i>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle p-2 location" onclick="addtofav(1,@mission.MissionId)" id="@mission.MissionId" style="position:absolute;right:8px; top:33%">
+                                        <img src="/images/heart.png" />
+                                    </div>
+                                }
+                            
+
+
+
+
+
+                            <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:55%">
+                                <img data-bs-toggle="modal" data-bs-target="#exampleModal" src="~/images/add1.png" />
+                            </div>
+
+                            <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        @foreach (var u in Model.User)
+                                        {
+                                            <div class="modal-body d-flex justify-content-between">
+                                                <p>@u.FirstName @u.LastName</p>
+
+                                                <button type="button" class="btn btn-primary m-0 recommend" value="@u.UserId" id="@mission.MissionId">Send</button>
+                                            </div>
+
+                                        }
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <img src="@mission.MissionImg" class=" card-img-top  h-100 " alt="..." />
+
+                            <div id="mission-theme" class="rounded-pill text-center">
+                                <p class="mt-1 mb-1 ps-2 pe-2">@mission.Theme.Title</p>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-1 ms-2">
+                            <h5 class="card-title">@mission.Title</h5>
+                            <p class="card-text">@mission.ShortDescription</p>
+                            <div class="d-flex justify-content-between">
+                                <div class="p-3">@mission.OrganizationName</div>
+
+                                @{
+                                    var ratingflag = 0;
+                                    foreach (var r in ViewBag.RatingsAvg)
+                                    {
+
+                                        if (@r.MissionId == mission.MissionId)
+                                        {
+                                            ratingflag = 1;
+                                            <div class=" w-20 h-20 mt-3">
+                                                @for (var i = 1; i <= r.AverageRating; i++)
+                                                {
+                                                    <img src="~/images/selected-star.png" />
+                                                }
+
+                                                @for (var i = r.AverageRating; i < 5; i++)
+                                                {
+                                                    <img src="~/images/star.png" />
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                    if (ratingflag == 0)
+                                    {
+
+                                        <div class="star-rating">
+                                            <input type="radio" id="5-stars" name="rating" value="5" />
+                                            <label for="5-stars" class="star">&#9733;</label>
+                                            <input type="radio" id="4-stars" name="rating" value="4" />
+                                            <label for="4-stars" class="star">&#9733;</label>
+                                            <input type="radio" id="3-stars" name="rating" value="3" />
+                                            <label for="3-stars" class="star">&#9733;</label>
+                                            <input type="radio" id="2-stars" name="rating" value="2" />
+                                            <label for="2-stars" class="star">&#9733;</label>
+                                            <input type="radio" id="1-star" name="rating" value="1" />
+                                            <label for="1-star" class="star">&#9733;</label>
+
+                                        </div>
+                                    }
+                                }
+
+
+
+                            </div>
+                            <div class="date-hr">
+                                <hr>
+                                @if ("Time" == mission.MissionType)
+                                {
+                                    @if (mission.EndDate > DateTime.Now && mission.StartDate > DateTime.Now)
+                                        {
+                                        <p class="mt-2 p-1 bg-white border">From&nbsp;<span>@Convert.ToDateTime(@mission.StartDate).ToString("dd/MM/yyyy")</span> &nbspTo&nbsp;<span>@Convert.ToDateTime(@mission.EndDate).ToString("dd/MM/yyyy")</span> </p>
+                                    }
+                                    else if (mission.EndDate > DateTime.Now && mission.StartDate < DateTime.Now)
+                                    {
+                                        <p class="mt-2 p-1 bg-white border">Mision Closed</p>
+                                    }
+                                    else
+                                        {
+                                             <p class="mt-2 p-1 bg-white border">Mision Completed</p>
+                                        }
+                                   
+                                }
+                                else
+                                {
+                                    @foreach (var i in Model.GoalMissions)
+                                    {
+                                        @if (i.MissionId == mission.MissionId)
+                                        {
+                                            var acchivedgoal = Model.Timesheets.Where(m => m.MissionId == mission.MissionId && m.Status == "APPROVED").Sum(t => t.Action);
+                                            @if(acchivedgoal<i.GoalValue){
+                                                <p class="mt-2 p-1 bg-white border">@i.GoalObjectiveText</p>
+                                            }
+                                            else
+                                            {
+                                                 <p class="mt-2 p-1 bg-white border">Achhived</p>
+                                            }
+
+
+                            }
+                                    }
+
+                                }
+
+                                <hr>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <img src="~/images/Seats-left.png" />
+                                    <span>@mission.SeatsLeft</span>
+                                    <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Seats left</p>
+
+                                </div>
+                                <div>
+                                    @if (@mission.MissionType == "Time")
+                                    {
+                                        <img src="~/images/deadline.png" />
+                                        <span>@Convert.ToDateTime(@mission.StartDate).ToString("dd/MM/yyyy")</span>
+                                        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Deadline</p>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var i in mission.GoalMissions)
+                                        {
+                                            @if (i.MissionId == mission.MissionId)
+                                            {
+                                               var acchivedgoal = Model.Timesheets.Where(m => m.MissionId == mission.MissionId && m.Status == "APPROVED").Sum(t => t.Action);
+                                                @if (acchivedgoal < i.GoalValue)
+                                                {
+                                                    <div class="ms-3">
+                                                    <progress value=@acchivedgoal max=@i.GoalValue></progress>
+
+                                                    <p class="mb-4">@i.GoalObjectiveText</p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="ms-3">
+                                                   
+
+                                                    <p class="mb-4">Goal Achhived</p>
+                                                    </div> 
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                </div>
+
+                            </div>
+                            <hr class="m-0" />
+
+                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId).FirstOrDefault() != null)
+                            {
+                                <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@mission.MissionId"> <button type="button" class="btn btn-outline-warning rounded-pill apply-btn mt-2 mb-1">View Details</button></a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@mission.MissionId"> <button type="button" class="btn btn-outline-warning rounded-pill apply-btn mt-2 mb-1">Apply <img class="ms-2" src="~/images/right-arrow.png" /></button></a>
+                            }
+
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+        </div>
+
+        <link href="~/css/site.css" rel="stylesheet" />
+        @*    --------------------------------------------------List View----------------------------------------------------*@
+
+        <div class="mission-list-cont mission-chhumantar container-fluid w-75" id="mission-list-cont">
+            <p class="filter"></p>
+            @foreach (var i in Model.Missions)
+            {
+                <span hidden value="@i.MissionId"></span>
+                <div class="list-view-card">
+                    <div class="mission-img">
+                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "APPROVED").FirstOrDefault() != null)
+                        {
+                            <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; background-color:green;">
+                                Applied
+                            </div>
+                        }
+                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "PENDING").FirstOrDefault() != null)
+                        {
+                            <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; background-color:grey;">
+                                Pending
+                            </div>
+                        }
+                        <div class="rounded-pill p-1" id="location" style="position:absolute;right:5px; top:10px"><img src="/images/pin.png" />&nbsp;<span>@i.City.Name</span> </div>
+
+
+                       
+                            @if (Model.FavMission.Select(f=>f.MissionId).ToList().Contains(i.MissionId))
+                            {
+                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:110px" onclick="removefav(2,@i.MissionId)" >
+                                    <i class="fa fa-heart" style="font-size:23px;color:red;vertical-align:bottom;"></i>
+                                </div>
+                               
+                            }
+                            else
+                            {
+                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:110px" onclick="addtofav(1,@i.MissionId)" >
+                                    <img src="/images/heart.png" />
+                                </div>
+                            }
+                        
+                       
+
+
+                        <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:160px">
+                            <img data-bs-toggle="modal" data-bs-target="#list-modal" src="~/images/add1.png" />
+                        </div>
+
+                        <!-- Modal -->
+                    <div class="modal fade" id="list-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    @foreach (var u in Model.User)
+                                    {
+                                        <div class="modal-body d-flex justify-content-between">
+                                            <p>@u.FirstName @u.LastName</p>
+
+                                            <button type="button" class="btn btn-primary m-0 recommend" value="@u.UserId" id="@i.MissionId">Send</button>
+                                        </div>
+
+                                    }
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <img src="@i.MissionImg" class="" alt="..." />
+
+                        <div id="mission-theme" class="rounded-pill text-center">
+                            <p class="mt-1 mb-1 ps-2 pe-2">@i.Theme.Title</p>
+                        </div>
+                    </div>
+                    <div class="card-info ms-3">
+
+                        <div class="row">
+                            <div style="" class="col-lg-7">
+                                <img src="/images/pin1.png" />
+                                <span style="font-size:90%;">@i.City.Name</span>
+                                <img class="ms-1" src="/images//web.png" />
+                                <span style="font-size:90%;">@i.Theme.Title</span>
+                                <img src="/images/organization.png" />
+                                <span style="font-size:90%;">@i.OrganizationName</span>
+                            </div>
+
+                          
+
+                            @{
+                                var ratingflag = 0;
+                                foreach (var r in ViewBag.RatingsAvg)
+                                {
+
+                                    if (@r.MissionId == i.MissionId)
+                                    {
+                                        ratingflag = 1;
+                                        <div class="col-lg-5 p-0">
+                                            @for (var x = 1; x <= r.AverageRating; x++)
+                                            {
+                                                <img src="~/images/selected-star.png"  />
+                                            }
+
+                                            @for (var x = r.AverageRating; x < 5; x++)
+                                            {
+                                                <img src="~/images/star.png" />
+                                            }
+                                        </div>
+                                    }
+                                }
+                                if (ratingflag == 0)
+                                {
+
+                                    <div class="col-lg-5 p-0">
+                                        <img src="~/images/star.png" />
+                                        <img src="~/images/star.png" />
+                                        <img src="~/images/star.png" />
+                                        <img src="~/images/star.png" />
+                                        <img src="~/images/star.png" />
+
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <h4>@i.Title</h4>
+                        <p>@i.ShortDescription</p>
+                        <div class="d-flex justify-content-between">
+                            <div class="">
+                                <img src="~/images/Seats-left.png" />
+                                <span>397</span>
+                                <p class="ms-4">Seats Left</p>
+                            </div>
+                            <div class="" style="display:flex;flex-direction:row">
+                                <div>
+                                </div>
+                                <div class="">
+                                    <img src="~/images/achieved.png" />
+                                    <div class="mt-2 " style="background-color:#818181; width:150px;height:10px; border-radius:10px"></div>
+                                    <span class="">Archived</span>
+                                </div>
+
+                            </div>
+                            <div class="">
+                                <img src="~/images/calender.png" />
+                                <span>
+                                    From
+                                    @Convert.ToDateTime(@i.StartDate).ToString("dd/mm/yyyy")
+                                </span>
+                                <p class="ms-4">Until @Convert.ToDateTime(@i.EndDate).ToString("dd/mm/yyyy")</p>
+                            </div>
+                            <div class="">
+                                <img src="~/images/Seats-left.png" />
+                                @foreach (var x in ViewBag.Missionskills)
+                                {
+                                    if (x.MissionId == i.MissionId)
+                                    {
+                                        <span>
+                                            @x.SkillName
+                                        </span>
+                                    }
+                                }
+
+
+
+                            </div>
+                            @if (Model.Application.Where(a => a.MissionId == i.MissionId).FirstOrDefault() != null)
+                            {
+                                <div class="">
+                                    <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@i.MissionId"><button class="btn btn-outline-primary rounded-pill">View Details</button></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="">
+                                    <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@i.MissionId"><button class="btn btn-outline-warning rounded-pill">Apply<img class="ms-2" src="~/images/right-arrow.png" /></button></a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="container page-links mt-3">
+            @{
+
+                if (pager.TotalPages > 0)
+                {
+
+                    <ul class="pagination justify-content-center">
+
+                        @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                        {
+                            <li class="page-item @(pge==pager.CurrentPage ? "active":"") ">
+                                <a class="page-link" onclick="filter(@pge)">@pge</a>
+                            </li>
+                        }
+
+
+                    </ul>
+                }
+                else
+                {
+                    <h1 class="text-center m-5">No Mission Found</h1>
+                }
+            }
+        </div>
+    </div>
+
+
+
+    <script>
+
+
+        document.getElementById("list-icon1").onclick = function () {
+
+            document.getElementById("card-cont").classList.toggle("mission-chhumantar");
+              document.getElementById("mission-list-cont").classList.toggle("mission-chhumantar");
+        }
+        document.getElementById("grid-icon").onclick = function () {
+
+            document.getElementById("card-cont").classList.toggle("mission-chhumantar");
+              document.getElementById("mission-list-cont").classList.toggle("mission-chhumantar");
+        }
+          var searchinput;
+          var sortid;
+                $(window).resize(function () {
+
+              if ($(window).width() < 1150) {
+                  document.getElementById("card-cont").classList.remove("mission-chhumantar");
+                  document.getElementById("mission-list-cont").classList.add("mission-chhumantar");
+
+              }
+
+          });
+          $('.sortvalue').on('click',function(){
+              console.log($(this).val());
+              sortid=$(this).val();
+              filter();
+
+          })
+          $('#search-text').on('keyup', function () {
+             console.log($(this).val());
+               searchinput = $(this).val();
+               filter();
+
+          });
+
+
+          function filter(jpg) {
+              var searchIDs = [];
+              var cities = [];
+              var theme = [];
+              var skills = [];
+              var countries=[];
+
+
+              $(".dropdown-item input:checkbox:checked").map(function () {
+                  searchIDs.push($(this).val());
+                  
+              });
+               $(".country-drop input:checkbox:checked").map(function () {
+                  countries.push($(this).val());
+                 
+              });
+              $(".theme-drop input:checkbox:checked").map(function () {
+                  theme.push($(this).val());
+                  
+              });
+              $(".city-drop input:checkbox:checked").map(function () {
+                  cities.push($(this).val());
+                  
+              })
+              var filters = searchIDs.join('');
+              var cityfilters = cities.join('');
+              var themesfilters = theme.join('');
+              var countryfilters=countries.join('');
+              console.log(countryfilters);
+              count = 0;
+
+              $.ajax({
+                  url: "/Home/LandingPage",
+                  method: "POST",
+                  datatype: "html",
+                  data: {
+                      lstfilter: filters,
+                      cityfilter: cityfilters,
+                      themefilter: themesfilters,
+                      countryfilter:countryfilters,
+                      sortby: sortid,
+                      searchin: searchinput,
+                      pg:jpg
+                  },
+                  success: function (data) {
+
+
+                      var newm = $($.parseHTML(data)).find("#card-cont").html();
+                      $("#card-cont").html(newm);
+
+                      var newl = $($.parseHTML(data)).find(".mission-list-cont").html();
+                      $(".mission-list-cont").html(newl);
+
+                      var newp = $($.parseHTML(data)).find(".page-links").html();
+                      $(".page-links").html(newp);
+
+
+
+
+                  }
+              });
+          }
+          $('.recommend').on('click', function () {
+
+              $.ajax({
+                  type: 'POST',
+                  url: '/Home/Recommend',
+                  data: {
+                      to_userid: $(this).val(),
+                      missionid: $(this).attr('id')
+
+                  },
+                  success:
+                      function (res) {
+                          console.log(res);
+                          location.reload();
+                      },
+                  failure:
+                      function () {
+                          console.log('error');
+                      }
+              });
+          })
+    </script>
+    <script src="~/js/Landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+﻿@model CIPlatformMain.Entities.ViewModel.AdminData
+
+
+
+<style>    
+    #ThemeTable_filter {
+        display: none;
+    }
+
+    tr td {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+
+    .current {
+        background-color: #F88634 !important;
+    }
+</style>
+
+
+
+<div id="MissionApplication" class="container-fluid">
+
+    <h2>Mission Themes</h2>
+    <hr />
+
+
+        <input class="form-control m-3 col-4" id="ThemeTableSearch" type="search" placeholder="Search" aria-label="Search">
+
+<div class="table-responsiv-lg">
+    <table id="ThemeTable" class="table " data-page-length='10'>
+        <thead style="background-color:#F8F9FC">
+
+            <tr>
+                <th class="py-3" scope="col">MissionTheme Title</th>
+                <th class="py-3" scope="col">Status</th>
+                <th class="py-3" scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Themes)
+            {
+
+                <tr>
+                    <td>@item.Title</td>
+                    @if (item.Status == 1)
+                    {
+                        <td class="text-success">Active</td>
+                    }
+                    else
+                    {
+                        <td class="text-danger">Inactive</td>
+                    }
+                    
+                  
+
+                    <td><span  onclick="Inactive(@item.MissionThemeId)" style="color:red"><i class="bi bi-x-circle"></i></span>&nbsp; &nbsp;<span onclick="Active(@item.MissionThemeId)" style="color:forestgreen"><i class="bi bi-check-circle"></i></span></td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+

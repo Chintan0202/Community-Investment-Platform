@@ -1,0 +1,161 @@
+﻿@model CIPlatformMain.Entities.ViewModel.StoryData;
+<partial name="_navigation" />
+
+<html>
+<head>
+    <link rel="stylesheet" href="/css/Volunteering_Mission_Page.css" />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+
+
+
+    @foreach (var s in Model.story)
+    {
+        <input value="@s.StoryId" id="StoryId" hidden/>
+
+        <div class="row  mt-2 container-fluid info">
+            <div class="info-img col-sm-12 col-lg-6 p-0">
+                <div class="container">
+                    @{
+                        int slide = 0;
+                    }
+                    <!-- Full-width images with number text -->
+                    @if (Model.storyMedia.Count() < 1)
+                    {
+
+                        <div class="mySlides">
+                    <img src="~/images/No-Image-Placeholder.svg.png" style="width:650px; height:600px;">
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model.storyMedia)
+                        {
+                            slide = slide + 1;
+                            @if (m.Type == "IMG")
+                            {
+
+                                <div class="mySlides">
+                                    <div class="numbertext">@slide / 6</div>
+                                    <img src="@m.Path" style="width:100%;">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mySlides">
+                                    <div class="numbertext">@slide / 6</div>
+                                        <iframe  style="width:100%; min-height:450px"
+                                        src='@m.Path.Replace("watch?v=", "embed/")'>
+                                        </iframe>
+                                </div>
+                            }
+                        }
+                        <!-- Next and previous buttons -->
+                        <!-- Image text
+                        <div class="caption-container">
+                            <p id="caption"></p>
+                        </div> -->
+                        <!-- Thumbnail images -->
+                        <div class="row">
+
+                            @foreach (var m in Model.storyMedia)
+                            {
+                                <div class="column">
+                                    <img class="demo cursor" src="@m.Path" style="width:100%; height:55px;" onclick="currentSlide(1)" alt="The Woods">
+                                </div>
+
+
+
+                            }
+
+
+                        </div>
+                        <a class="prev " onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next " onclick="plusSlides(1)">&#10095;</a>
+                    }
+                </div>
+            </div>
+            <div class="info-txt col-lg-6 col-sm-12 ">
+                <div class="d-flex">
+                       <img src="@s.User.Avatar" class="rounded-circle mb-2" style="width:100px; height:100px;" />
+                <div class="rounded-pill" style="margin-left:auto"><button class="btn  rounded-pill" style="border:2px solid black">views @s.Views</button></div>
+                </div>
+             
+                <br />
+                <span>@s.User.FirstName</span>
+                <span>@s.User.LastName</span>
+                <h1 class="m-0" style="font-size:25px;">
+                    @s.Title
+                </h1>
+                <p class="m-0">
+                    @Html.Raw(@s.Description)
+                </p>
+
+
+                <div class="mt-4 text-center">
+
+                    <button class="btn btn-lg btn-outline-dark rounded-pill me-2 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="~/images/add1.png" />&nbspRecommend to a Co-worker</button>
+
+                    <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@s.MissionId"><button type="button" class="btn btn-lg btn-outline-warning rounded-pill mt-2">Open Mission <img class="ms-2" src="~/images/right-arrow.png" /></button></a>
+                   
+                    
+                    <input type="hidden" value="@s.MissionId">
+                    <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                @foreach (var i in Model.user)
+                                {
+                                    <div class="modal-body d-flex justify-content-between">
+                                        <p>@i.FirstName @i.LastName</p>
+
+                                        <button type="button" class="btn btn-primary m-0 recommend" value="@i.UserId">Send</button>
+                                    </div>
+
+                                }
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-4">
+            <h2>@s.Mission.Title</h2>
+            <hr />
+            <h4>@s.Mission.ShortDescription</h4>
+            <p>@s.Mission.Description</p>
+
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+            <p>
+                Why do we use it?
+                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+
+
+                Where does it come from?
+                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics,
+                very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+            </p>
+        </div>
+
+    }
+
+
+
+    <script src="~/js/StoryDetail.js"></script>
+
+</body>
+</html>

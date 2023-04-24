@@ -1,0 +1,217 @@
+﻿@model CIPlatformMain.Entities.ViewModel.AddMission
+<h2 class="mt-3">Mission</h2>
+<hr />
+<button class="btn btn-outline-warning" onclick="GetMissionList()">Back To List</button>
+<form method="post" class="m-4 needs-validation" novalidate asp-action="AddEditMission" asp-controller="Admin" enctype="multipart/form-data">
+    <input hidden asp-for="Mission.MissionId" />
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        <input type="text" asp-for="Mission.Title" class="form-control" id="Title" required>
+        <div class="invalid-feedback">
+            Title Is Required Field Here
+        </div>
+
+    </div>
+    <div class="mb-3">
+        <label for="ShortDescription" class="form-label">ShortDescription</label>
+        <textarea id="ShortDescription" asp-for="Mission.ShortDescription" class="form-control"></textarea>
+
+
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea id="editor" asp-for="Mission.Description" class="form-control" required></textarea>
+        <div class="invalid-feedback">
+            Descirption Is Required Field Here
+        </div>
+
+    </div>
+    <div class="row mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="Country" class="form-label">Country</label>
+            <select asp-for="Mission.CountryId" class="form-control custom-validation" required>
+                @foreach (var item in Model.Countries)
+                {
+                    <option value="@item.CountryId">
+                        @item.Name
+                    </option>
+                }
+            </select>
+            <div class="invalid-feedback">
+                Country Is requires
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="City" class="form-label">City</label>
+            <select asp-for="Mission.CityId" class="form-control custom-validation" required>
+                @foreach (var item in Model.Cities)
+                {
+                    <option value="@item.CityId">
+                        @item.Name
+                    </option>
+                }
+            </select>
+            <div class="invalid-feedback">
+                City Is required
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="Orgnizationname" class="form-label">Organisation Name</label>
+        <input type="text" asp-for="Mission.OrganizationName" class="form-control" id="Orgnizationname">
+    </div>
+
+    <div class="mb-3">
+        <label for="OrgnizationDetails" class="form-label">Organisation Details</label>
+        <input type="text" asp-for="Mission.OrganizationDetail" class="form-control" id="OrgnizationDetails">
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="StartDate" class="form-label">StartDate</label>
+            <input type="date" asp-for="Mission.StartDate" class="form-control" id="StartDate" />
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="EndDate" class="form-label">End Date</label>
+            <input type="date" asp-for="Mission.EndDate" class="form-control" id="EndDate" />
+
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <label for="Type" class="form-label">Mission Type</label>
+        <select asp-for="Mission.MissionType" id="typeselect" class="form-control">
+
+            <option value="Goal">
+                Goal
+            </option>
+            <option value="Time">
+                Time
+            </option>
+        </select>
+    </div>
+    <div class="row mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="TotalSeats" class="form-label">Total Seats</label>
+            <input type="text" asp-for="Mission.TotalSeats" class="form-control" id="TotalSeats" disabled />
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="Deadline" class="form-label">Deadline</label>
+            <input type="date" class="form-control" id="Deadline" disabled />
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="Theme" class="form-label">Theme</label>
+            <select asp-for="Mission.ThemeId" class="form-control custom-validation" required>
+                @foreach (var item in Model.Theme)
+                {
+                    <option value="@item.MissionThemeId">
+                        @item.Title
+                    </option>
+                }
+            </select>
+            <div class="invalid-feedback">
+                Theme Is requires
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <label for="Skill" class="form-label">Skill</label>
+           
+            <select name="Skilllist" size="1" class="form-control custom-validation" multiple>
+                @foreach (var item in Model.Skill)
+                {
+                    <option value="@item.SkillId">
+                        @item.SkillName
+                    </option>
+                }
+            </select>
+
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="MissionDocument" class="form-label">Mission Document</label>
+        <input type="file" name="MissionDocument" class="form-control" id="MissionDocument" multiple>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <label for="DefualtMissionPhoto" class="form-label">Default Mission Photos</label>
+            <input type="file" asp-for="Mission.MissionImg" name="DefualtMissionPhotos" class="form-control" id="DefualtMissionPhoto" required>
+            <div class="invalid-feedback">
+                Default Image Is required!
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <label for="MissionPhotos" class="form-label">Mission Photos</label>
+            <input type="file" name="MissionPhotos" class="form-control" id="MissionPhotos" multiple>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="MissionAvability" class="form-label">Mission Avability</label>
+        <input type="text" asp-for="Mission.Availability" class="form-control" id="MissionAvability">
+    </div>
+
+    <div class="mb-3">
+        <label for="MissionVideo" class="form-label">Mission VideoURL</label>
+        <input type="text" name="MissionVideoURL" class="form-control" id="MissionVideo">
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'autolink lists link image charmap print preview',
+        toolbar: ' bold italic underline | alignleft aligncenter alignright | bullist numlist | undo redo ',
+        height: 250,
+        menubar: false
+    });
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    $('#typeselect').on('change', function () {
+        if ($('#typeselect').val() == "Time") {
+            $('#TotalSeats').removeAttr("disabled");
+            $('#Deadline').removeAttr("disabled");
+
+        }
+
+    });
+
+</script>
