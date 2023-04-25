@@ -15,6 +15,21 @@
     .add {
         margin-left: 28%;
     }
+
+    input {
+        border: 1px solid black !important;
+        background-image: none !important;
+    }
+
+    select {
+        border: 1px solid black !important;
+        background-image: none !important;
+    }
+
+    textarea {
+        border: 1px solid black !important;
+        background-image: none !important;
+    }
 </style>
  @{
     if (TempData["result"] != null)
@@ -66,7 +81,7 @@
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-outline-warning rounded-pill add" data-bs-toggle="modal" data-bs-target="#ForSubmitTime"><i class="bi bi-plus-lg "></i>Add</button>
                 <!-- Modal -->
-                <form asp-action="AddTimeTimesheet" method="post">
+                <form class="needs-validation" novalidate asp-action="AddTimeTimesheet" method="post">
                     <input hidden id="TimesheetId" name="TimesheetId"/>
                     <div class="modal fade" id="ForSubmitTime" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -81,10 +96,10 @@
                                 <div class="modal-body">
                                     <div>
                                         <label for="selectmission">Mission</label>
-                                        <select class="form-select" id="select-tag" name="MissionId" required>
-                                           
+                                        <select class="form-select custom-validation" id="mission-select-Time" name="MissionId" required>
+                                            <option value="">Select Mission</option>
                                             @foreach (var m in Model.Mission)
-                                            {<option>Select Missions</option>
+                                            {
                                                 @if (m.MissionType == "Time")
                                                 {
                                                     <option class="mission-id" value="@m.MissionId">@m.Title</option>
@@ -92,6 +107,9 @@
 
                                             }
                                         </select>
+                                        <div class="invalid-feedback">
+                                           Mission Is Required Here!
+                                        </div>
                                     </div>
 
 
@@ -99,18 +117,27 @@
 
                                     <div class="mt-3">
                                         <label>Date Volunteered</label>
-                                        <input id="DateVolunteered" type="date" class="form-control" name="DateVolunteered" required/>
+                                        <input id="DateVolunteered" type="date" class="form-control " name="DateVolunteered" required />
+                                        <div class="invalid-feedback">
+                                            Date Is Required Here!
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="mt-3 col-xl-6 col-md-12 col-12">
                                             <label>Hours</label>
-                                            <input id="GetHoursTime" type="text" class="form-control"
+                                            <input id="GetHoursTime" type="number" class="form-control " min="0" max="23"
                                                    placeholder="Enter Spent Hours" name="Hours" required/>
+                                            <div class="invalid-feedback">
+                                                Hours Is Required Here and should be between 0-23!
+                                            </div>
                                         </div>
                                         <div class="mt-3 col-xl-6 col-md-12 col-12">
                                             <label for="selectmission">Minutes</label>
-                                            <input type="text" class="form-control" id="GetMinutesTime"
+                                            <input type="number" class="form-control " id="GetMinutesTime"  max="59"
                                                    placeholder="Enter Spent Minutes" name="Minutes" required/>
+                                            <div class="invalid-feedback">
+                                                Time Is Required Here and should be between 1-59!
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -173,7 +200,7 @@
                 <button type="button" class="btn btn-outline-warning rounded-pill add" data-bs-toggle="modal" data-bs-target="#ForSubmitGoal"><i class="bi bi-plus-lg "></i>Add</button>
                 <!-- Modal -->
 
-                <form asp-action="AddGoalTimesheet" method="post">
+                <form class="needs-validation" novalidate asp-action="AddGoalTimesheet" method="post">
                      <input hidden id="GoalTimesheetId" name="TimesheetId"/>
                     <div class="modal fade" id="ForSubmitGoal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -188,10 +215,10 @@
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <label for="selectmission">Mission</label>
+                                        <label for="Goalselecttag">Mission</label>
 
-                                        <select class="form-select" id="Goalselecttag" name="MissionId">
-                                            <option>Select Mission</option>
+                                        <select class="form-select" id="Goalselecttag" name="MissionId" required>
+                                            <option value="">Please Select Mission</option>
                                             @foreach (var m in Model.Mission)
                                             {
                                                 @if (m.MissionType == "Goal")
@@ -299,8 +326,8 @@
 
 </script>
 <script>
-    $('#select-tag').on('change',function(){
-       var missionid=$('#select-tag').val();
+    $('#mission-select-Time').on('change', function () {
+        var missionid = $('#mission-select-Time').val();
 
                  $.ajax({
                         type: 'POST',
@@ -428,4 +455,26 @@
 
     })
 
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
 </script>

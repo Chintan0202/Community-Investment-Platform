@@ -253,12 +253,34 @@ namespace CIPlatformMain.Repository
                         newMission.MissionMedia.Add(missionMedium);
                     }
                 }
-                //if (missionSkill != null)
-                //{
-                //    MissionSkill skill= new MissionSkill();
-                //    skill.SkillId=missionSkill.SkillId;
-                //    newMission.MissionSkills.Add(skill);
-                //}
+                if (SkillList.Count()>0)
+                {
+                    foreach (var item in SkillList)
+                    {
+                        MissionSkill skill = new MissionSkill();
+                        skill.SkillId = item;
+                        newMission.MissionSkills.Add(skill);
+                    }
+                   
+                }
+                if (Documents.Count!=0)
+                {
+                    foreach (var file in Documents)
+                    {
+
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(file.FileName)), FileMode.Create);
+
+                        file.CopyToAsync(FileStream);
+                        var DocsURL = "\\Uploads\\" + Path.GetFileName(file.FileName);
+
+                        MissionMedium missionMedium = new MissionMedium();
+                        missionMedium.MediaPath = DocsURL;
+                        missionMedium.MediaName = file.FileName;
+                        missionMedium.MediaType = "DOC";
+                        newMission.MissionMedia.Add(missionMedium);
+                        FileStream.Close();
+                    }
+                }
                 _cidatabase.Add(newMission);
                 _cidatabase.SaveChanges();
 
@@ -405,6 +427,61 @@ namespace CIPlatformMain.Repository
             return skill;
         }
 
+      public  MissionTheme GetMissionTheme(long MissionThemeId)
+        {
+            MissionTheme missionTheme = _cidatabase.MissionThemes.Where(t => t.MissionThemeId == MissionThemeId).FirstOrDefault();
+            return missionTheme;
+        }
+         public bool AddTheme(string ThemeName, int Status)
+        {
+            if(ThemeName!=null && Status!=0)
+            {
+                MissionTheme missionTheme = new MissionTheme();
+                missionTheme.Title = ThemeName;
+                if (Status == 0)
+                {
+                    missionTheme.Status = 0;
+                }
+                else
+                {
+                    missionTheme.Status = 1;
+                }
+               
+                _cidatabase.Add(missionTheme);
+                _cidatabase.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool EditTheme(string ThemeName, int Status, long ThemeId)
+        {
+            if (ThemeName != null && Status != null && ThemeId!=null)
+            {
+                MissionTheme missionTheme = _cidatabase.MissionThemes.Where(t => t.MissionThemeId == ThemeId).FirstOrDefault();
+                missionTheme.Title = ThemeName;
+                if (Status == 0)
+                {
+                    missionTheme.Status = 0;
+                }
+                else
+                {
+                    missionTheme.Status = 1;
+                }
+
+                _cidatabase.Update(missionTheme);
+                _cidatabase.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void AddCMSPage(CmsPage cmsPage)
         {
             _cidatabase.Add(cmsPage);

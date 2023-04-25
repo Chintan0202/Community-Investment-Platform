@@ -12,24 +12,28 @@
     {
         <input value="@mission.MissionId" type="hidden" id="mission_id" />
 
+
         <div class="d-flex  mt-2 ms-lg-4 info">
+          
+
+           
             <div class="info-img  p-0">
                 <div class="container">
 
                     <!-- Full-width images with number text -->
-                <div class="mySlides">
-                        <div class="numbertext">1 / 6</div>
-                        <img src="@mission.MissionImg" style="width:100%; ">
-                    </div>
+               
                     @{
-                        int slide = 1;
+                        int slide = 0;
                         foreach (var i in Model.MissionMedia)
                         {
+                           if(i.MediaType=="IMG"){
+                            
                             slide = slide + 1;
                             <div class="mySlides">
                                 <div class="numbertext">@slide / 6</div>
                                 <img src="@i.MediaPath" style="width:100%">
                             </div>
+                           }
                         }
 
                     }
@@ -42,14 +46,17 @@
                     </div> -->
                     <!-- Thumbnail images -->
                 <div class="row">
-                        <div class="column">
-                            <img class="demo cursor" src="@mission.MissionImg" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
-                        </div>
+                       
                         @foreach (var i in Model.MissionMedia)
                         {
-                            <div class="column">
-                                <img class="demo cursor" src="@i.MediaPath" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
-                            </div>
+                            if (i.MediaType == "IMG")
+                            {
+
+
+                                <div class="column">
+                                    <img class="demo cursor" src="@i.MediaPath" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                                </div>
+                            }
                         }
 
 
@@ -58,6 +65,8 @@
                     <a class="next " onclick="plusSlides(1)">&#10095;</a>
                 </div>
             </div>
+
+            
             <div class="info-txt col-lg-6 ms-3 ">
                 <h1 class="m-0" style="font-size:25px;">
                     @mission.Title
@@ -161,7 +170,7 @@
                     @{
                         var counts = 0;
 
-
+                     
                         for (var i = 0; i < ViewBag.Userrating; i++)
                         {
                             counts = counts + 1;
@@ -291,7 +300,14 @@
                             Lorem Ipsum.
                         </p>
                         <h3>Documents</h3>
-                        <p>No Documents Uploaded</p>
+                         @foreach (var i in Model.MissionMedia)
+                        {
+                            if (i.MediaType == "DOC")
+                            {
+                                <a href="@i.MediaPath" target="_blank"><img src="~/images/doc.png" /></a>
+                            }
+                        }
+                        
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                         <p>
@@ -359,12 +375,12 @@
                         <p class="w-20">Rating</p>
                         <div class="w-75 user_rating">
 
-                            @for (var i = 0; i < ViewBag.Rating; i++)
+                            @for (var i = 1; i < Model.Rating; i++)
                             {
                                 <img src="~/images/selected-star.png" />
                             }
 
-                            @for (var i = 0; i < (5 - ViewBag.Rating); i++)
+                            @for (var i = 0; i < (5 - Model.Rating); i++)
                             {
                                 <img src="~/images/star.png" />
                             }
@@ -372,7 +388,7 @@
 
 
 
-                            <span>(By <span>@ViewBag.Totalrating</span> Volunteer)</span>
+                            <span>(By <span>@Model.TotalRating</span> Volunteer)</span>
                         </div>
                     </div>
                     <hr />

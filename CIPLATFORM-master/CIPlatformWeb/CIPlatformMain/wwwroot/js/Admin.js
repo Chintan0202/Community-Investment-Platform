@@ -23,8 +23,6 @@ function AddUser() {
         }
     });
 }
-
-
 function GetUserData() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
    
@@ -56,7 +54,7 @@ function GetUserData() {
 
 }
 function GetCMSList() {
-
+    console.log("call");
     $('#UserList').removeClass('active-tab');
     $.ajax({
         url: '/Admin/CMSList',
@@ -78,7 +76,6 @@ function GetCMSList() {
         }
     });
 }
-
 function AddEditUser(userid) {
     $.ajax({
         url: '/Admin/AddEditUserPage',
@@ -135,7 +132,6 @@ function DeleteCMS(CMSPageId) {
         }
     });
 }
-
 function GetMissionApplication() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
@@ -169,8 +165,6 @@ function GetMissionApplication() {
 
 
 }
-
-
 function GetThemeList() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
@@ -296,7 +290,6 @@ function GetStoryDetails(storyid) {
         }
     });
 }
-
 function DeleteStory(StoryId) {
     Swal.fire({
         title: 'Are you sure?',
@@ -395,7 +388,6 @@ function GetMissionList() {
         }
     });
 }
-
 function DeleteMission(MissionId) {
     Swal.fire({
         title: 'Are you sure?',
@@ -446,6 +438,34 @@ function AddEditMission(missionid) {
     });
 }
 
-$(document).ready(function () {
-    GetUserData();  
-});
+function DraftTheme(themeid) {
+    $('#ThemeEdit').modal('show');
+    $.ajax({
+        url: '/Admin/DraftTheme',
+        data: {
+            MissionThemeId:themeid
+        },
+        success: function (res) {
+            console.log(res);
+            $('#ThemeName').val(res.title);
+            $('#ThemeId').val(res.missionThemeId);
+            $('#Status').val(res.status);
+        }
+    });
+}
+
+function AddEditTheme() {
+    $.ajax({
+        url: '/Admin/AddEditTheme',
+        data: {
+            ThemeId: $('#ThemeId').val(),
+            ThemeName: $('#ThemeName').val(),
+            Status: $('#Status').val()
+        },
+        success: function (res) {
+            $('#ThemeEdit').modal('hide');
+            GetThemeList();
+
+        }
+    });
+}

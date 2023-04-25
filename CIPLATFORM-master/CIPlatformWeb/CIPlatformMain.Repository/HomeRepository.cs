@@ -14,7 +14,7 @@ using MailKit.Security;
 
 namespace CIPlatformMain.Repository
 {
-    public class HomeRepository:IHome
+    public class HomeRepository : IHome
     {
         private readonly CidatabaseContext _cidatabase;
 
@@ -25,20 +25,32 @@ namespace CIPlatformMain.Repository
 
         public Missiondata GetMissions(long UserId)
         {
+            // Query to retrieve mission ratings...
+            var avgRatings = _cidatabase.MissionRatings
+                .GroupBy(r => r.MissionId)
+                .Select(g => new VMMissionRating
+                {
+                    Id = g.Key,
+                    MissionRating = g.Average(r => r.Rating)
+                })
+                .ToList();
             var missiondata = new Missiondata
             {
-                Missions = _cidatabase.Missions.Where(m=>m.DeletedAt==null).ToList(),
+                Missions = _cidatabase.Missions.Where(m => m.DeletedAt == null).ToList(),
                 Theme = _cidatabase.MissionThemes.ToList(),
                 City = _cidatabase.Cities.ToList(),
                 Country = _cidatabase.Countries.ToList(),
                 GoalMissions = _cidatabase.GoalMissions.ToList(),
                 Skills = _cidatabase.Skills.ToList(),
-                FavMission = _cidatabase.FavoriteMissions.Where(f=>f.UserId==UserId).ToList(),
+                FavMission = _cidatabase.FavoriteMissions.Where(f => f.UserId == UserId).ToList(),
                 Application = _cidatabase.MissionApplications.ToList(),
                 User = _cidatabase.Users.ToList(),
-                MissionSkills=_cidatabase.MissionSkills.ToList(),
-                Timesheets=_cidatabase.Timesheets.ToList()
+                MissionSkills = _cidatabase.MissionSkills.ToList(),
+                Timesheets = _cidatabase.Timesheets.ToList(),
+                Ratings = avgRatings
             };
+          
+
 
             return missiondata;
         }
@@ -52,22 +64,37 @@ namespace CIPlatformMain.Repository
 
         public MissionDetails GetMissionDetails(int missionid)
         {
-           var  mission = _cidatabase.Missions.Where(m => m.MissionId == missionid).FirstOrDefault();
+            var mission = _cidatabase.Missions.Where(m => m.MissionId == missionid).FirstOrDefault();
+          
+
             var missiondetail = new MissionDetails
             {
-                Mission = _cidatabase.Missions.Where(m=>m.MissionId==missionid).ToList(),
+                Mission = _cidatabase.Missions.Where(m => m.MissionId == missionid).ToList(),
                 Theme = _cidatabase.MissionThemes.ToList(),
                 City = _cidatabase.Cities.ToList(),
                 Country = _cidatabase.Countries.ToList(),
-                GoalMissions = _cidatabase.GoalMissions.Where(g=>g.MissionId==missionid).FirstOrDefault(),
+                GoalMissions = _cidatabase.GoalMissions.Where(g => g.MissionId == missionid).FirstOrDefault(),
                 Skills = _cidatabase.Skills.ToList(),
                 FavMission = _cidatabase.FavoriteMissions.Where(g => g.MissionId == missionid).FirstOrDefault(),
                 Application = _cidatabase.MissionApplications.ToList(),
                 User = _cidatabase.Users.ToList(),
-                MissionSkills = _cidatabase.MissionSkills.Where(s=>s.MissionId==missionid).ToList(),
-                MissionMedia = _cidatabase.MissionMedia.Where(m=>m.MissionId==missionid).ToList(),
-                RelatedMission = _cidatabase.Missions.Where(m => m.CityId == mission.CityId ||  m.ThemeId == mission.ThemeId && m.MissionId != mission.MissionId).Take(3).ToList()
-        };
+                MissionSkills = _cidatabase.MissionSkills.Where(s => s.MissionId == missionid).ToList(),
+                MissionMedia = _cidatabase.MissionMedia.Where(m => m.MissionId == missionid).ToList(),
+                RelatedMission = _cidatabase.Missions.Where(m => m.CityId == mission.CityId || m.ThemeId == mission.ThemeId && m.MissionId != mission.MissionId).Take(3).ToList()
+                
+            };
+            var MissionRatings = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid).ToList();
+            if (MissionRatings.Count() > 0)
+            {
+                double AvgRating = MissionRatings.Average(m => m.Rating);
+                missiondetail.Rating = AvgRating;
+                missiondetail.TotalRating = MissionRatings.Count();
+            }
+            else
+            {
+                missiondetail.Rating = 0;
+                missiondetail.TotalRating = 0;
+            }
 
             return missiondetail;
         }
@@ -111,7 +138,7 @@ namespace CIPlatformMain.Repository
         {
             ContactU contactU = new ContactU();
             contactU.UserId = user_id;
-            contactU.Subject = Subject; 
+            contactU.Subject = Subject;
             contactU.Message = Message;
 
             _cidatabase.Add(contactU);

@@ -13,8 +13,44 @@
       "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png"
     },
     {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2 - Copy.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2 - Copy.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png"
+    },
+    {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png",
       "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4 - Copy (2).png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4 - Copy (2).png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4 - Copy.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4 - Copy.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-4.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy (2).png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy (2).png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy - Copy.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy - Copy.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5 - Copy.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png"
     },
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png",
@@ -53,6 +89,10 @@
       "PackagePath": "staticwebassets\\Uploads\\Nourish-the-Children-in--African-country-1.png"
     },
     {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\Nourish-the-Children-in--African-country.png",
+      "PackagePath": "staticwebassets\\Uploads\\Nourish-the-Children-in--African-country.png"
+    },
+    {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\bell.png",
       "PackagePath": "staticwebassets\\Uploads\\bell.png"
     },
@@ -83,6 +123,10 @@
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\istockphoto-1146517111-612x612.jpg",
       "PackagePath": "staticwebassets\\Uploads\\istockphoto-1146517111-612x612.jpg"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\new 3.txt",
+      "PackagePath": "staticwebassets\\Uploads\\new 3.txt"
     },
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\tree-736885__480.jpg",
@@ -623,6 +667,10 @@
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\xlsx.png",
       "PackagePath": "staticwebassets\\images\\xlsx.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\js\\AddEditStory.js",
+      "PackagePath": "staticwebassets\\js\\AddEditStory.js"
     },
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\js\\Admin.js",

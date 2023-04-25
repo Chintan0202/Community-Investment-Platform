@@ -19,7 +19,20 @@
 </head>
 <body>
     <style>
+        input {
+            border: 1px solid black !important;
+            background-image: none !important;
+        }
 
+        select {
+            border: 1px solid black !important;
+            background-image: none !important;
+        }
+
+        textarea {
+            border: 1px solid black !important;
+            background-image: none !important;
+        }
         .profile-pic {
             color: transparent;
             transition: all 0.3s ease;
@@ -125,12 +138,18 @@
                             <div class="form-group">
                                 <label class="profile_details_text">Name:</label>
                                 <input type="text" asp-for="User.FirstName" class="form-control" value="@Model.User.FirstName" required>
+                                <div class="invalid-feedback">
+                                    FirstName Is Required Here!
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group">
                                 <label class="profile_details_text">Surname: </label>
                                 <input type="text" asp-for="User.LastName" class="form-control" value="@Model.User.LastName" required>
+                                <div class="invalid-feedback">
+                                    LastName Is Required Here!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,6 +172,9 @@
                             <div class="form-group">
                                 <label class="profile_details_text">Title:</label>
                                 <input type="text" asp-for="User.Title" class="form-control" value="@Model.User.Title" required>
+                                <div class="invalid-feedback">
+                                    Title Is Required Here!
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -184,16 +206,20 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group">
                                 <label>Country</label>
-                                <select class="form-select" name="countryid" id="country" aria-label="Default select example">
+                                <select class="form-select" name="countryid" id="country" aria-label="Default select example" required>
+                                    
                                     @if (Model.User.CountryId != null)
                                     {
                                         <option value="@Model.User.CountryId" selected>@Model.Country.Where(c=>c.CountryId==Model.User.CountryId).Select(c=>c.Name).FirstOrDefault()</option>
                                     }
+                                    
+                                        
 
                                     @foreach (var item in Model.Country)
                                     {
                                         <option value="@item.CountryId">@item.Name</option>
                                     }
+                                    
                                 </select>
                             </div>
                         </div>
@@ -389,6 +415,28 @@
                     text: 'Password And Conform Password must be same'
                 })
             }
+            else if(uoldpassword == ""){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Enter Something in OldPassword'
+            })
+            }
+            else if (unewpassword == "") {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Enter Something in newpassword'
+                })
+            }
+            else if (uconformpassword == "") {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Enter Something in conformpassword'
+                })
+            }
+           
             else {
                 $.ajax({
                     type: 'POST',
@@ -410,6 +458,7 @@
                             $("#OldPassword").val("");
                             $('#NewPassword').val("");
                             $("#Conformpassword").val("");
+                            $("#staticBackdrop").modal('hide');
                         },
                     failure:
                         function () {

@@ -53,6 +53,10 @@ namespace CIPlatformMain.Repository.Interface
 
         bool AddMission(Mission mission, List<IFormFile> Images,IFormFile DefaultImage, List<IFormFile> Documents, String MissionVideoURL, List<int> SkillList);
 
+        MissionTheme GetMissionTheme(long MissionThemeId);
+        bool AddTheme(string ThemeName, int Status);
+
+        bool EditTheme(string ThemeName, int Status, long ThemeId);
 
     }
 }

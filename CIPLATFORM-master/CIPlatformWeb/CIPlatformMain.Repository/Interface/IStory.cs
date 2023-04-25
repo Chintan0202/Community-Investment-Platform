@@ -1,5 +1,6 @@
 ﻿using CIPlatformMain.Entities.Models;
 using CIPlatformMain.Entities.ViewModel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace CIPlatformMain.Repository.Interface
     {
         StoryData GetStoryData();
 
+        bool AddStory(long UserId,long MissionId, string StoryDescription, DateTime StoryDate, string StoryTitle, List<IFormFile> StoryImages, string StoryVideoURL);
+
+        bool EditStory(long StoryId,long UserId, long MissionId, string StoryDescription, DateTime StoryDate, string StoryTitle, List<IFormFile> StoryImages, string StoryVideoURl, List<String> SavedImages);
     }
 }

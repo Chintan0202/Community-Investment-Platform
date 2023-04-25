@@ -7,6 +7,8 @@ using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using CIPlatformMain.Repository.Interface;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace CIPlatformMain.Controllers
 {
@@ -25,7 +27,66 @@ namespace CIPlatformMain.Controllers
             return View();
         }
 
+        public JsonResult GetStory(long MissionId)
+        {
+            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
+            Story story=_cidatabase.Stories.Where(s=>s.MissionId == MissionId && s.UserId==userid && s.Status=="DRAFT").FirstOrDefault();
+            
+            
+            if (story != null)
+            {
+                var images = _cidatabase.StoryMedia.Where(m => m.StoryId == story.StoryId).ToList();
+               
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    MaxDepth = 1024
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(story, options);
 
+
+                return Json(json);
+            }
+            else
+            {
+                return Json("NoStoryFound");
+            }
+        }
+        public IActionResult AddEditStory()
+        {
+            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
+            var storydata = _istory.GetStoryData();
+            storydata.Applications = storydata.Applications.Where(a => a.UserId == userid && a.DeletedAt==null).ToList();
+            //ViewData["Mis"] = _cidatabase.Missions.ToList();
+            //ViewData["Missions"] = _cidatabase.MissionApplications.Where(m => m.UserId == userid && m.DeletedAt == null ).ToList();
+            return View(storydata);
+        }
+
+        [HttpPost]
+    
+        public IActionResult AddEditStoryPost(long StoryId,long MissionId,string StoryDescription,DateTime StoryDate,string StoryTitle,List<IFormFile> StoryImages,string StoryVideoURL ,List<string> savedImages)
+        {
+            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
+            var storydata = _istory.GetStoryData();
+            var story = storydata.story.Where(s => s.MissionId == MissionId && s.UserId == userid && s.Status == "DRAFT").FirstOrDefault();
+            if (story == null) {
+                if (StoryId == 0)
+                {
+                    var status = _istory.AddStory(userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL);
+                }
+                else
+                {
+                    var status = _istory.EditStory(StoryId,userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL,savedImages);
+
+                }
+            }
+            else
+            {
+                var status = _istory.EditStory(StoryId, userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL, savedImages);
+            }
+            
+            return View();
+        }
         //To Show Stories
         public IActionResult StoryListPage(int pg = 1)
         {

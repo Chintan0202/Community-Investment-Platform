@@ -34,6 +34,7 @@ namespace CIPlatformMain.Controllers
             {
                 return RedirectToAction("AdminPage");
             }
+            
             else
             {
                 ViewBag.Logincredentials = 0;
@@ -44,8 +45,9 @@ namespace CIPlatformMain.Controllers
 
         public IActionResult AdminPage()
         {
-            
-            var Data = _iadmin.GetData();
+          
+           
+                var Data = _iadmin.GetData();
             return View(Data);
             
         }
@@ -98,7 +100,7 @@ namespace CIPlatformMain.Controllers
 
 
             
-            TempData["CMSPageRedirect"] = 1;
+            TempData["CMSPageRedirect"] = "CMSRedirect";
             return RedirectToAction("AdminPage");
 
 
@@ -259,7 +261,6 @@ namespace CIPlatformMain.Controllers
             if (MissionId != 0)
             {
                 addMission.Mission=addMission.Missions.Where(m=>m.MissionId==MissionId).FirstOrDefault();
-               
                 addMission.MissionMediums = addMission.MissionMediums.Where(m => m.MissionId == MissionId).ToList();
                 addMission.MissionSkills = addMission.MissionSkills.Where(m => m.MissionId == MissionId).ToList();
                 
@@ -272,12 +273,57 @@ namespace CIPlatformMain.Controllers
         public IActionResult AddEditMission(Mission mission,List<IFormFile> MissionDocument, List<IFormFile> MissionPhotos, IFormFile DefualtMissionPhotos, String MissionVideoURL,List<int> SkillList)
         {
 
-            var status = _iadmin.AddMission(mission, MissionPhotos, DefualtMissionPhotos, MissionDocument, MissionVideoURL, SkillList);
-            TempData["MissionListRedirect"] = 1;
-            return RedirectToAction("AdminPage");
+            if (mission.MissionId != 0)
+            {
+
+            }
+            else
+            {
+
+
+                var status = _iadmin.AddMission(mission, MissionPhotos, DefualtMissionPhotos, MissionDocument, MissionVideoURL, SkillList);
+                TempData["MissionListRedirect"] = 1;
+            }
+                return RedirectToAction("AdminPage");
         }
 
 
+        public IActionResult DraftTheme(long MissionThemeId)
+        {
+            MissionTheme missionTheme = _iadmin.GetMissionTheme(MissionThemeId);
+            return Json(missionTheme);
+        }
+        
+        public IActionResult AddEditTheme(string ThemeName, int Status, long ThemeId)
+        {
+            if (ThemeId == 0)
+            {
+                var status=_iadmin.AddTheme(ThemeName, Status);
+                if (status == true)
+                {
+                    TempData["Addtheme"] = 1;
+                }
+                else
+                {
+                    TempData["Addtheme"] = null;
+                }
+
+            }
+            else
+            {
+                var status = _iadmin.EditTheme(ThemeName, Status, ThemeId);
+                if (status == true)
+                {
+                    TempData["Edittheme"] = 1;
+                }
+                else
+                {
+                    TempData["Edittheme"] = null;
+                }
+                
+            }
+            return RedirectToAction("AdminPage");
+        }
 
         public IActionResult AddUser()
         {

@@ -33,5 +33,9 @@ namespace CIPlatformMain.Entities.ViewModel
 
         public IEnumerable<Mission>? RelatedMission { get; set; }
 
+      public double Rating { get; set; }
+
+        public double TotalRating { get; set; }
+
     }
 }

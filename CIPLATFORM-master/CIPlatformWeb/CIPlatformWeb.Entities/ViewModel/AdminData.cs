@@ -38,6 +38,8 @@ namespace CIPlatformMain.Entities.ViewModel
 
         public CmsPage? CmsPage { get; set; }  
 
+        public MissionTheme MissionTheme { get; set; }
+
 
 
     }

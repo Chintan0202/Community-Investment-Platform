@@ -21,5 +21,7 @@ namespace CIPlatformMain.Entities.ViewModel
 
         public IEnumerable<MissionTheme> Theme { get; set; }
 
+        public IEnumerable<MissionApplication>? Applications { get; set; }
+
     }
 }

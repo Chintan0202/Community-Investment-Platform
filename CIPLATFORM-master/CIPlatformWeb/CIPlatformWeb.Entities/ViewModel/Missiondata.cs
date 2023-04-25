@@ -31,5 +31,7 @@ namespace CIPlatformMain.Entities.ViewModel
 
         public IEnumerable<Timesheet>? Timesheets { get; set; }
 
+       public IEnumerable<VMMissionRating> Ratings { get; set; }
+
     }
 }

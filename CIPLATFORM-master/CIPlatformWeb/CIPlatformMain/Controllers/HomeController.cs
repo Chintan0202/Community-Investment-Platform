@@ -340,24 +340,8 @@ namespace CIPlatformMain.Controllers
 
             ViewBag.Userrating = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid && r.UserId == userid).Select(r => r.Rating).FirstOrDefault();
 
-            //To Display Rating
-            ViewData["mission_rating"] = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid).ToList();
-            var totalrating = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid).Count();
-            var sum = 0;
-            ViewBag.Totalrating = totalrating;
-            foreach (var r in ViewData["mission_rating"] as IList<MissionRating>)
-            {
-                sum = sum + r.Rating;
-            }
-
-            if (totalrating != 0)
-            {
-                ViewBag.Rating = sum / totalrating;
-            }
-            if (totalrating == 0)
-            {
-                ViewBag.Rating = 0;
-            }
+            
+           
 
 
 
@@ -451,7 +435,7 @@ namespace CIPlatformMain.Controllers
         {
             var userid = long.Parse(HttpContext.Session.GetString("UserID"));
             var rating_mission_id = int.Parse(HttpContext.Session.GetString("Mission_ID"));
-            var ratingstatus = _cidatabase.MissionRatings.Where(r => r.MissionId == rating_mission_id && r.UserId == long.Parse(HttpContext.Session.GetString("UserID"))).SingleOrDefault();
+            var ratingstatus = _cidatabase.MissionRatings.Where(r => r.MissionId == rating_mission_id && r.UserId == long.Parse(HttpContext.Session.GetString("UserID"))).FirstOrDefault();
             if (ratingstatus == null)
             {
                 if (user_rating > 0)

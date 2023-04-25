@@ -30,7 +30,8 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
             <label for="Country" class="form-label">Country</label>
-            <select asp-for="Mission.CountryId" class="form-control custom-validation" required>
+            <select asp-for="Mission.CountryId" class="form-select " required>
+                <option value="">Select Country</option>
                 @foreach (var item in Model.Countries)
                 {
                     <option value="@item.CountryId">
@@ -45,7 +46,8 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
             <label for="City" class="form-label">City</label>
-            <select asp-for="Mission.CityId" class="form-control custom-validation" required>
+            <select asp-for="Mission.CityId" class="form-select " required>
+                <option value="">Select City</option>
                 @foreach (var item in Model.Cities)
                 {
                     <option value="@item.CityId">
@@ -115,7 +117,8 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
             <label for="Theme" class="form-label">Theme</label>
-            <select asp-for="Mission.ThemeId" class="form-control custom-validation" required>
+            <select asp-for="Mission.ThemeId" class="form-select"  required>
+                <option value="">Open this select menu</option>
                 @foreach (var item in Model.Theme)
                 {
                     <option value="@item.MissionThemeId">
@@ -131,7 +134,7 @@
 
             <label for="Skill" class="form-label">Skill</label>
            
-            <select name="Skilllist" size="1" class="form-control custom-validation" multiple>
+            <select name="Skilllist" size="1" class="form-control" multiple>
                 @foreach (var item in Model.Skill)
                 {
                     <option value="@item.SkillId">
@@ -139,7 +142,7 @@
                     </option>
                 }
             </select>
-
+    
         </div>
     </div>
 

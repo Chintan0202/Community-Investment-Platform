@@ -51,10 +51,10 @@
                     {
                         <td class="text-danger">Inactive</td>
                     }
-                    
-                  
 
-                    <td><span  onclick="Inactive(@item.MissionThemeId)" style="color:red"><i class="bi bi-x-circle"></i></span>&nbsp; &nbsp;<span onclick="Active(@item.MissionThemeId)" style="color:forestgreen"><i class="bi bi-check-circle"></i></span></td>
+
+
+                        <td><span data-bs-toggle="modal" onclick="DraftTheme(@item.MissionThemeId)" data-bs-target="#ThemeEdit" style="color:#F88634"><i class="bi bi-pencil-square"></i></span>&nbsp;&nbsp;&nbsp; &nbsp;<span onclick="DeleteTheme(@item.MissionThemeId)"><i class="bi bi-trash"></i></span></td>
                 </tr>
 
             }
@@ -63,6 +63,38 @@
     </table>
 </div>
 
+</div>
+<div class="modal fade" id="ThemeEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Theme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group input-group-lg mb-3">
+                    <span class="input-group-text">ThemeName</span>
+                    <input type="text" class="form-control" id="ThemeName" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    <input hidden id="ThemeId" />
+                </div>
+                <div class="mb-3">
+                    <label for="Status" class="form-label">Status</label>
+                    <select id="Status" class="form-control">
+                        <option value="1">
+                            Active
+                        </option>
+                        <option value="0">
+                            InActive
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" onclick="AddEditTheme()">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 

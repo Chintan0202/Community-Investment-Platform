@@ -95,28 +95,28 @@
         <div class="row mb-3">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="FirstName" class="form-label">FirstName</label>
-                <input type="text" asp-for="User.FirstName" class="form-control custom-validation" id="FirstName" required>
+                <input type="text" asp-for="User.FirstName" class="form-control" id="FirstName" required>
                 <div class="invalid-feedback">
                     FirstName Is Required!
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="LastName" class="form-label">LastName</label>
-                <input type="text" asp-for="User.LastName" class="form-control custom-validation" id="LastName">
+                <input type="text" asp-for="User.LastName" class="form-control " id="LastName">
             </div>
         </div>
        
         <div class="row mb-3">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="Email" class="form-label">Email</label>
-                <input type="email" asp-for="User.Email" class="form-control custom-validation" id="Email" required>
+                <input type="email" asp-for="User.Email" class="form-control " id="Email" required>
                 <div class="invalid-feedback">
                     EmailId Is Required!
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="Password" class="form-label">Password</label>
-                <input type="text" asp-for="User.Password" class="form-control custom-validation" id="Password" required>
+                <input type="text" asp-for="User.Password" class="form-control " id="Password" required>
                 <div class="invalid-feedback">
                     Password Is Required!
                 </div>
@@ -125,19 +125,19 @@
         <div class="row mb-3">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="EmployeeId" class="form-label">EmployeeId</label>
-                <input type="text" asp-for="User.EmployeeId" class="form-control custom-validation" id="EmployeeId">
+                <input type="text" asp-for="User.EmployeeId" class="form-control " id="EmployeeId">
                 
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label for="Deparment" class="form-label">Department</label>
-                <input type="text" asp-for="User.Department" class="form-control custom-validation" id="Department">
+                <input type="text" asp-for="User.Department" class="form-control " id="Department">
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
                 <label for="Country" class="form-label">Country</label>
-                <select asp-for="User.CountryId" class="form-control custom-validation" required>
+                <select asp-for="User.CountryId" class="form-control " required>
                     @foreach(var item in Model.Country)
                     {
                         <option value="@item.CountryId">
@@ -152,7 +152,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
                 <label for="City" class="form-label">City</label>
-                <select asp-for="User.CityId" class="form-control custom-validation" required>
+                <select asp-for="User.CityId" class="form-control " required>
                     @foreach (var item in Model.City)
                     {
                         <option value="@item.CityId">
@@ -168,7 +168,7 @@
 
         <div class="mb-3">
             <label for="ProfileText" class="form-label">ProfileText</label>
-            <textarea id="editor" asp-for="User.ProfileText" class="form-control custom-validation" required></textarea>
+            <textarea id="editor" asp-for="User.ProfileText" class="form-control " required></textarea>
             <div class="invalid-feedback">
                 Profiletext Is required
             </div>
@@ -177,7 +177,7 @@
         
         <div class="mb-3">
             <label for="Status" class="form-label">Status</label>
-            <select asp-for="User.Status " class="form-control custom-validation">
+            <select asp-for="User.Status " class="form-control ">
                 <option value="true">
                     Active
                 </option>

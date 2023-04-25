@@ -1,5 +1,104 @@
 ﻿
 
+var loadFile = function (event) {
+    var image = document.getElementById("output");
+    image.src = URL.createObjectURL(event.target.files[0]);
+    console.log(image)
+};
+
+$("#changepass").on('click', function () {
+    var uoldpassword = $("#OldPassword").val();
+    var unewpassword = $('#NewPassword').val();
+    var uconformpassword = $("#Conformpassword").val();
+
+    if (unewpassword != uconformpassword) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Password And Conform Password must be same'
+        })
+    }
+    else if (uoldpassword == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Enter Something in OldPassword'
+        })
+    }
+    else if (unewpassword == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Enter Something in newpassword'
+        })
+    }
+    else if (uconformpassword == "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Enter Something in conformpassword'
+        })
+    }
+
+    else {
+        $.ajax({
+            type: 'POST',
+            url: '/User/chnagepassword',
+            data: {
+                oldpassword: uoldpassword,
+                ConformPassword: uconformpassword,
+                NewPassword: unewpassword
+            },
+            success:
+                function (res) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Password Is Succcessfully Changed',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $("#OldPassword").val("");
+                    $('#NewPassword').val("");
+                    $("#Conformpassword").val("");
+                    $("#staticBackdrop").modal('hide');
+                },
+            failure:
+                function () {
+                    console.log('error');
+                }
+        });
+    }
+})
+$('#country').on('change', function () {
+
+    $.ajax({
+        type: 'GET',
+
+        url: '/User/GetCities',
+        data: {
+
+            Country_id: $('#country').val()
+        },
+        success:
+            function (res) {
+                console.log(res);
+                $(".city-drop").empty();
+                for (var i = 0; i < res.length; i++) {
+                    console.log(res[i]);
+                    $('.city-drop').append(`<option value="${res[i].cityId}">${res[i].name}</option>`);
+                }
+                $('.city-drop').removeAttr("disabled");
+                $('.city-alert').hide();
+            },
+        failure:
+            function () {
+
+            }
+    });
+});
+
 $(function () {
 
     $('body').on('click', '.list-group .list-group-item', function () {

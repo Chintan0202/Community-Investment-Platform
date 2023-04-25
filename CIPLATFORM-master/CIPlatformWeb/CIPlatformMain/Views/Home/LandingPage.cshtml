@@ -65,7 +65,7 @@
 
 
     <div class="container-fluid w-75 buttons justify-content-end  mt-3">
-        <h4 style="margin-right:auto">Explore @ViewData["MissionCount"] Missions</h4>
+       
         <button class="btn  dropdown-toggle me-3 mb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Sort-By
         </button>
@@ -86,7 +86,7 @@
 
         <div class="card-cont container-fluid w-75" id="card-cont">
 
-
+            <h4>Explore @ViewData["MissionCount"] Missions</h4>
             
 
             <div class="row">
@@ -177,19 +177,19 @@
 
                                 @{
                                     var ratingflag = 0;
-                                    foreach (var r in ViewBag.RatingsAvg)
+                                    foreach (var r in Model.Ratings)
                                     {
 
-                                        if (@r.MissionId == mission.MissionId)
+                                        if (@r.Id == mission.MissionId)
                                         {
                                             ratingflag = 1;
                                             <div class=" w-20 h-20 mt-3">
-                                                @for (var i = 1; i <= r.AverageRating; i++)
+                                                @for (var i = 1; i <= r.MissionRating; i++)
                                                 {
                                                     <img src="~/images/selected-star.png" />
                                                 }
 
-                                                @for (var i = r.AverageRating; i < 5; i++)
+                                                @for (var i = r.MissionRating; i < 5; i++)
                                                 {
                                                     <img src="~/images/star.png" />
                                                 }

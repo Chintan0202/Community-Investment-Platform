@@ -14,8 +14,8 @@
     }
 
     .navbar {
-        width: 25%;
-        height: 150vh;
+        min-width: 25%;
+        min-height: 100vh;
         align-items: flex-start;
     }
 
@@ -54,4 +54,16 @@
 }
 .tox-statusbar, .tox-menubar, .tox-notifications-container {
     display: none !important;
+}
+input {
+    border: 1px solid black !important;
+    background-image: none !important;
+}
+select {
+    border: 1px solid black !important;
+    background-image: none !important;
+}
+textarea {
+    border: 1px solid black !important;
+    background-image: none !important;
 }
