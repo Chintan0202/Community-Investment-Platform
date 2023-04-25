@@ -133,7 +133,36 @@ namespace CIPlatformMain.Repository
 
             }
         }
+        public bool MissionApplication(long MissionId, long UserId)
+        {
+            if (MissionId != 0)
+            {
+                MissionApplication missionApplication = new MissionApplication();
+            missionApplication.MissionId = MissionId;
+            missionApplication.UserId = UserId;
 
+            
+                Mission missionobj = _cidatabase.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault();
+
+                if (missionobj != null)
+                {
+                    missionobj.SeatsLeft = missionobj.SeatsLeft - 1;
+
+                    _cidatabase.Update(missionobj);
+                    _cidatabase.SaveChanges();
+                }
+                _cidatabase.Add(missionApplication);
+                _cidatabase.SaveChanges(true);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+           
+        }
         public bool Contact_us(long user_id, string Subject, string Message)
         {
             ContactU contactU = new ContactU();

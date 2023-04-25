@@ -233,7 +233,8 @@ function EditSkill() {
         url: '/Admin/EditSkill',
         data: {
             SkillId: $('#SkillId').val(),
-            SkillName: $('#SkillName').val()
+            SkillName: $('#SkillName').val(),
+            SkillStatus: $('#SkillStatus').val()
         },
         success: function (res) {
             $('#SkillEdit').modal('hide');

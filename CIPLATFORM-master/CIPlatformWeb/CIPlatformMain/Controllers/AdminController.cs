@@ -145,9 +145,9 @@ namespace CIPlatformMain.Controllers
             return Json(skill);
         }
 
-        public IActionResult EditSkill(long SkillId,string SkillName)
+        public IActionResult EditSkill(long SkillId,string SkillName,int SkillStatus)
         {
-            var status=_iadmin.EditSkill(SkillId, SkillName);
+            var status=_iadmin.EditSkill(SkillId, SkillName, SkillStatus);
             if (status == true)
             {
                 TempData["DeleteStatus"] = 1;
@@ -262,9 +262,8 @@ namespace CIPlatformMain.Controllers
             {
                 addMission.Mission=addMission.Missions.Where(m=>m.MissionId==MissionId).FirstOrDefault();
                 addMission.MissionMediums = addMission.MissionMediums.Where(m => m.MissionId == MissionId).ToList();
+                addMission.MissionsDocuments = addMission.MissionsDocuments.Where(m => m.MissionId == MissionId).ToList();
                 addMission.MissionSkills = addMission.MissionSkills.Where(m => m.MissionId == MissionId).ToList();
-                
-
             }
             
             return PartialView("_AddEditMission", addMission);
@@ -275,7 +274,7 @@ namespace CIPlatformMain.Controllers
 
             if (mission.MissionId != 0)
             {
-
+                var status=_iadmin.EditMission(mission, MissionPhotos, DefualtMissionPhotos, MissionDocument, MissionVideoURL, SkillList);
             }
             else
             {

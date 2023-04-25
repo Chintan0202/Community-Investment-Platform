@@ -225,12 +225,11 @@ $('.apply-btn').on('click', function () {
         },
         success:
             function (res) {
-                console.log("Hey There You Are Success");
                 location.reload();
             },
         failure:
             function () {
-                console.log('error');
+               
             }
     });
 })

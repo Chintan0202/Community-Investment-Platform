@@ -6,6 +6,25 @@
     <link rel="stylesheet" href="/css/Volunteering_Mission_Page.css" />
 </head>
 <body>
+    @{
+        if (TempData["ApplicationStatus"] == "true")
+        {
+            <script>
+           alert('');
+            </script>
+        }
+        if (TempData["ApplicationStatus"] == "false")
+        {
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Write Something in Comment!',
+
+                })
+                </script>
+        }
+    }
     <partial name="_navigation" />
     @foreach (var mission in Model.Mission)
 
@@ -14,14 +33,20 @@
 
 
         <div class="d-flex  mt-2 ms-lg-4 info">
-          
 
-           
+
+
             <div class="info-img  p-0">
                 <div class="container">
 
                     <!-- Full-width images with number text -->
-               
+                    @if (Model.MissionMedia.Count() == 0)
+                    {
+                        <div class="mySlides">
+                            
+                            <img src="~/images/No-Image-Placeholder.svg.png" style="max-width:400px;max-height:450px">
+                        </div>
+                    }
                     @{
                         int slide = 0;
                         foreach (var i in Model.MissionMedia)
@@ -30,10 +55,20 @@
                             
                             slide = slide + 1;
                             <div class="mySlides">
-                                <div class="numbertext">@slide / 6</div>
-                                <img src="@i.MediaPath" style="width:100%">
+                                <div class="numbertext">@slide / @Model.MissionMedia.Count()</div>
+                                    <img src="@i.MediaPath" style="width:100%; min-height:400px">
                             </div>
                            }
+                            //else
+                            //{
+                            //    slide = slide + 1;
+                            //    <div class="mySlides">
+                            //        <div class="numbertext">@slide /@Model.MissionMedia.Count() </div>
+                            //        <iframe style="width:100%; min-height:400px"
+                            //                src='@i.MediaPath.Replace("watch?v=", "embed/")'>
+                            //        </iframe>
+                            //    </div>
+                            //}
                         }
 
                     }
@@ -51,8 +86,6 @@
                         {
                             if (i.MediaType == "IMG")
                             {
-
-
                                 <div class="column">
                                     <img class="demo cursor" src="@i.MediaPath" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
                                 </div>
@@ -61,8 +94,11 @@
 
 
                     </div>
-                    <a class="prev " onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next " onclick="plusSlides(1)">&#10095;</a>
+                    @if (Model.MissionMedia.Count() > 0)
+                    {
+                        <a class="prev " onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next " onclick="plusSlides(1)">&#10095;</a>
+                    }
                 </div>
             </div>
 
@@ -223,6 +259,7 @@
 
                     </div>
                 </div>
+                <div id="MissionApplicationstaus">
                 @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
                 {
                     <button type="button" disabled class="btn btn-lg btn-success rounded-pill apply-btn mt-2 mb-1 px-5">Applied</button>
@@ -237,7 +274,7 @@
                 {
                     <button type="button" class="btn btn-outline-warning rounded-pill apply-btn mt-2 mb-1" value="@mission.MissionId">Apply <img class="ms-2" src="~/images/right-arrow.png" /></button>
                 }
-
+                </div>
 
             </div>
 
@@ -368,7 +405,7 @@
                     <hr />
                     <div class="d-flex justify-content-between  ">
                         <p class="w-20">Days</p>
-                        <p class=" w-75">Weekends Only</p>
+                        <p class=" w-75">@mission.Availability</p>
                     </div>
                     <hr />
                     <div class="d-flex justify-content-between  ">

@@ -174,21 +174,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Timesheets)
+                        @if (Model.MissionApplied != null && Model.Timesheet!=null)
                         {
-                            @if (@item.Mission.MissionType == "Time")
+
+
+                            @foreach (var item in Model.Timesheets)
                             {
-                                <tr>
-                                    <td>@item.Mission.Title</td>
-                                    <td>@Convert.ToDateTime(@item.DateVolunteered).ToString("dd/MM/yyyy")</td>
-                                    <td>@item.Time.ToString().Substring(0,2)</td>
-                                    <td>@item.Time.ToString().Substring(3,2)</td>
-                                    <td id="@item.TimesheetId" class="TimeEditIcon" data-bs-toggle="modal" data-bs-target="#ForSubmitTime"><i class="bi bi-pen"></i></td>
-                                    <td id="@item.TimesheetId" class="deleteicon"><img src="~/images/bin.png" /></td>
-                                </tr>
+                                @if (@item.Mission.MissionType == "Time")
+                                {
+                                    <tr>
+                                        <td>@item.Mission.Title</td>
+                                        <td>@Convert.ToDateTime(@item.DateVolunteered).ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Time.ToString().Substring(0,2)</td>
+                                        <td>@item.Time.ToString().Substring(3,2)</td>
+                                        <td id="@item.TimesheetId" class="TimeEditIcon" data-bs-toggle="modal" data-bs-target="#ForSubmitTime"><i class="bi bi-pen"></i></td>
+                                        <td id="@item.TimesheetId" class="deleteicon"><img src="~/images/bin.png" /></td>
+                                    </tr>
+                                }
                             }
                         }
-
                     </tbody>
                 </table>
             </div>
@@ -273,22 +277,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Timesheets)
+                        @if (Model.MissionApplied != null && Model.Timesheet != null)
                         {
-                            @if (@item.Mission.MissionType == "Goal")
+
+
+                            @foreach (var item in Model.Timesheets)
                             {
-                                <tr>
-                                    <td>@item.Mission.Title</td>
-                                    <td>@Convert.ToDateTime(@item.DateVolunteered).ToString("dd/MM/yyyy")</td>
-                                    <td>@item.Action</td>
-                                    <td id="@item.TimesheetId" class="GoalEditIcon" data-bs-toggle="modal" data-bs-target="#ForSubmitGoal"><i class="bi bi-pen"></i></td>
-                                    <td id="@item.TimesheetId" class="deleteicon"><img src="~/images/bin.png" /></td>
+                                @if (@item.Mission.MissionType == "Goal")
+                                {
+                                    <tr>
+                                        <td>@item.Mission.Title</td>
+                                        <td>@Convert.ToDateTime(@item.DateVolunteered).ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Action</td>
+                                        <td id="@item.TimesheetId" class="GoalEditIcon" data-bs-toggle="modal" data-bs-target="#ForSubmitGoal"><i class="bi bi-pen"></i></td>
+                                        <td id="@item.TimesheetId" class="deleteicon"><img src="~/images/bin.png" /></td>
 
-                                </tr>
+                                    </tr>
+                                }
+
                             }
-
                         }
-
                     </tbody>
                 </table>
             </div>

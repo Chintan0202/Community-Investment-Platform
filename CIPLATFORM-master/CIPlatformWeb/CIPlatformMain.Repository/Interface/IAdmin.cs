@@ -41,7 +41,7 @@ namespace CIPlatformMain.Repository.Interface
 
         bool DeleteSkill(long SkillId);
 
-        bool EditSkill(long SkillId,string SkillName);
+        bool EditSkill(long SkillId,string SkillName,int SkillStatus);
 
         Skill GetSkill(long SkillId);
 
@@ -51,7 +51,10 @@ namespace CIPlatformMain.Repository.Interface
 
         bool DeleteCMSPage(long CMSPageId);
 
-        bool AddMission(Mission mission, List<IFormFile> Images,IFormFile DefaultImage, List<IFormFile> Documents, String MissionVideoURL, List<int> SkillList);
+        bool AddMission(Mission mission, List<IFormFile> Images,IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList);
+
+        bool EditMission(Mission mission, List<IFormFile> Images, IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList);
+
 
         MissionTheme GetMissionTheme(long MissionThemeId);
         bool AddTheme(string ThemeName, int Status);

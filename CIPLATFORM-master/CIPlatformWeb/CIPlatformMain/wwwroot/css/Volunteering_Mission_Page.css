@@ -1,4 +1,6 @@
-﻿
+﻿body{
+    overflow-x:hidden!important;
+}
 .card-cont {
     display: flex;
     justify-content: center;
@@ -231,10 +233,7 @@ hr {
     .demo:hover {
         opacity: 1;
     }
-.mySlides img{
-    
-    min-height:450px; 
-}
+
 
 
 .fab-button {

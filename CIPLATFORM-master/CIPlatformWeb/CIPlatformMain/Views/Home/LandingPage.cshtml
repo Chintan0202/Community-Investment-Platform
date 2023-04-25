@@ -307,7 +307,7 @@
                             </div>
                             <hr class="m-0" />
 
-                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId).FirstOrDefault() != null)
+                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.UserId == long.Parse(Context.Session.GetString("UserID"))).FirstOrDefault() != null)
                             {
                                 <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@mission.MissionId"> <button type="button" class="btn btn-outline-warning rounded-pill apply-btn mt-2 mb-1">View Details</button></a>
                             }
@@ -352,14 +352,14 @@
                        
                             @if (Model.FavMission.Select(f=>f.MissionId).ToList().Contains(i.MissionId))
                             {
-                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:110px" onclick="removefav(2,@i.MissionId)" >
+                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:80px" onclick="removefav(2,@i.MissionId)" >
                                     <i class="fa fa-heart" style="font-size:23px;color:red;vertical-align:bottom;"></i>
                                 </div>
                                
                             }
                             else
                             {
-                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:110px" onclick="addtofav(1,@i.MissionId)" >
+                                <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:80px" onclick="addtofav(1,@i.MissionId)" >
                                     <img src="/images/heart.png" />
                                 </div>
                             }
@@ -367,7 +367,7 @@
                        
 
 
-                        <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:160px">
+                        <div class="rounded-circle p-2" id="location" style="position:absolute;right:8px; top:130px">
                             <img data-bs-toggle="modal" data-bs-target="#list-modal" src="~/images/add1.png" />
                         </div>
 
@@ -398,7 +398,7 @@
                         </div>
 
 
-                        <img src="@i.MissionImg" class="" alt="..." />
+                        <img src="@i.MissionImg" style="max-width:365px;max-height:265px;" alt="..." />
 
                         <div id="mission-theme" class="rounded-pill text-center">
                             <p class="mt-1 mb-1 ps-2 pe-2">@i.Theme.Title</p>
@@ -420,19 +420,19 @@
 
                             @{
                                 var ratingflag = 0;
-                                foreach (var r in ViewBag.RatingsAvg)
+                                foreach (var r in Model.Ratings)
                                 {
 
-                                    if (@r.MissionId == i.MissionId)
+                                    if (@r.Id == i.MissionId)
                                     {
                                         ratingflag = 1;
                                         <div class="col-lg-5 p-0">
-                                            @for (var x = 1; x <= r.AverageRating; x++)
+                                            @for (var x = 1; x <= r.MissionRating; x++)
                                             {
                                                 <img src="~/images/selected-star.png"  />
                                             }
 
-                                            @for (var x = r.AverageRating; x < 5; x++)
+                                            @for (var x = r.MissionRating; x < 5; x++)
                                             {
                                                 <img src="~/images/star.png" />
                                             }
@@ -459,15 +459,43 @@
                             <div class="">
                                 <img src="~/images/Seats-left.png" />
                                 <span>397</span>
-                                <p class="ms-4">Seats Left</p>
+                                <p class="">Seats Left</p>
                             </div>
                             <div class="" style="display:flex;flex-direction:row">
                                 <div>
                                 </div>
                                 <div class="">
-                                    <img src="~/images/achieved.png" />
-                                    <div class="mt-2 " style="background-color:#818181; width:150px;height:10px; border-radius:10px"></div>
-                                    <span class="">Archived</span>
+                                    @if (i.MissionType == "Time")
+                                    {
+                                        <img src="~/images/deadline.png" />
+                                        <span>@Convert.ToDateTime(@i.StartDate).ToString("dd/MM/yyyy")</span>
+                                        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Deadline</p>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var x in i.GoalMissions)
+                                        {
+                                            @if (i.MissionId == i.MissionId)
+                                            {
+                                                var acchivedgoal = Model.Timesheets.Where(m => m.MissionId == i.MissionId && m.Status == "APPROVED").Sum(t => t.Action);
+                                                @if (acchivedgoal < x.GoalValue)
+                                                {
+                                                    <div class="">
+                                                        <progress value=@acchivedgoal max=@x.GoalValue></progress>
+
+                                                        <p class="">@x.GoalObjectiveText</p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="ms-3">
+                                                        <p class="mb-4">Goal Achhived</p>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+
+                                    }
                                 </div>
 
                             </div>
@@ -479,7 +507,7 @@
                                 </span>
                                 <p class="ms-4">Until @Convert.ToDateTime(@i.EndDate).ToString("dd/mm/yyyy")</p>
                             </div>
-                            <div class="">
+                           @* <div class="">
                                 <img src="~/images/Seats-left.png" />
                                 @foreach (var x in ViewBag.Missionskills)
                                 {
@@ -493,7 +521,7 @@
 
 
 
-                            </div>
+                            </div>*@
                             @if (Model.Application.Where(a => a.MissionId == i.MissionId).FirstOrDefault() != null)
                             {
                                 <div class="">

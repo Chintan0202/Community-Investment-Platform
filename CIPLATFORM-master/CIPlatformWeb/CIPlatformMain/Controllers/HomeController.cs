@@ -179,14 +179,7 @@ namespace CIPlatformMain.Controllers
         public IActionResult LandingPage(string searchin, string themefilter, string cityfilter, string countryfilter, int sortby, int pg = 1)//change here
         {
            
-            ViewBag.RatingsAvg = _ihome.GetRatings().GroupBy(r => r.MissionId)
-                                     .Select(
-                                                g => new
-                                                {
-                                                    MissionId = g.Key,
-                                                    AverageRating = g.Average(r => r.Rating)
-                                                })
-                                     .ToList();
+            
 
             if (HttpContext.Session.GetString("UserID") != null)
             {
@@ -478,27 +471,17 @@ namespace CIPlatformMain.Controllers
         public RedirectResult MissionApplication(int missionid)
         {
             var userid = long.Parse(HttpContext.Session.GetString("UserID"));
-           
-            MissionApplication missionApplication = new MissionApplication();
-            missionApplication.MissionId = missionid;
-            missionApplication.UserId = userid;
 
-            if (missionid != 0)
+            var status = _ihome.MissionApplication(missionid, userid);
+            if (status == true)
             {
-                Mission missionobj = _cidatabase.Missions.Where(m => m.MissionId == missionid).FirstOrDefault();
-               
-                if(missionobj != null)
-                {
-                    missionobj.SeatsLeft = missionobj.SeatsLeft - 1;
-
-                    _cidatabase.Update(missionobj);
-                    _cidatabase.SaveChanges();
-                }
-              
+                TempData["ApplicationStatus"] = "true";
             }
-            
-            _cidatabase.Add(missionApplication);
-            _cidatabase.SaveChanges(true);
+            else
+            {
+                TempData["ApplicationStatus"] = "false";
+            }
+           
 
             return Redirect(HttpContext.Request.Headers["Referer"].ToString());
         }

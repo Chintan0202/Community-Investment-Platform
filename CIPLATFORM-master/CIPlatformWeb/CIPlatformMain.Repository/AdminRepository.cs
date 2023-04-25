@@ -215,7 +215,7 @@ namespace CIPlatformMain.Repository
                     DefaultImage.CopyToAsync(FileStream);
                     var ImageURL = "\\Uploads\\" + Path.GetFileName(DefaultImage.FileName);
                     newMission.MissionImg = ImageURL;
-                    
+
                     FileStream.Close();
                 }
 
@@ -237,7 +237,7 @@ namespace CIPlatformMain.Repository
                         FileStream.Close();
                     }
                 }
-                if(MissionVideoURL!=null)
+                if (MissionVideoURL != null)
                 {
                     Match regexMatch = Regex.Match(MissionVideoURL, "^[^v]+v=(.{11}).*",
                                 RegexOptions.IgnoreCase);
@@ -253,7 +253,7 @@ namespace CIPlatformMain.Repository
                         newMission.MissionMedia.Add(missionMedium);
                     }
                 }
-                if (SkillList.Count()>0)
+                if (SkillList.Count() > 0)
                 {
                     foreach (var item in SkillList)
                     {
@@ -261,9 +261,9 @@ namespace CIPlatformMain.Repository
                         skill.SkillId = item;
                         newMission.MissionSkills.Add(skill);
                     }
-                   
+
                 }
-                if (Documents.Count!=0)
+                if (Documents.Count != 0)
                 {
                     foreach (var file in Documents)
                     {
@@ -287,6 +287,137 @@ namespace CIPlatformMain.Repository
             }
             return true;
         }
+
+
+        public bool EditMission(Mission mission, List<IFormFile> Images, IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList)
+        {
+            Mission newMission = _cidatabase.Missions.Where(m => m.MissionId == mission.MissionId).FirstOrDefault();
+            if (newMission!= null)
+            {
+                
+                newMission.Title = mission.Title;
+                newMission.Description = mission.Description;
+                newMission.ShortDescription = mission.ShortDescription;
+                newMission.OrganizationName = mission.OrganizationName;
+                newMission.OrganizationDetail = mission.OrganizationDetail;
+                newMission.MissionType = mission.MissionType;
+                newMission.StartDate = mission.StartDate;
+                newMission.EndDate = mission.EndDate;
+                newMission.TotalSeats = mission.TotalSeats;
+                newMission.CityId = mission.CityId;
+                newMission.CountryId = mission.CountryId;
+                newMission.SeatsLeft = mission.TotalSeats;
+                newMission.Availability = mission.Availability;
+                newMission.ThemeId = mission.ThemeId;
+
+                if (DefaultImage != null)
+                {
+                    FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(DefaultImage.FileName)), FileMode.Create);
+
+                    DefaultImage.CopyToAsync(FileStream);
+                    var ImageURL = "\\Uploads\\" + Path.GetFileName(DefaultImage.FileName);
+                    newMission.MissionImg = ImageURL;
+
+                    FileStream.Close();
+                }
+
+                if (Images.Count != 0)
+                {
+                    var oldmedia=_cidatabase.MissionMedia.Where(m=>m.MissionId==mission.MissionId && m.MediaType=="IMG").ToList();
+                    if (oldmedia.Count() > 0)
+                    {
+                        foreach(var item in oldmedia)
+                        {
+                            _cidatabase.Remove(item);
+                            _cidatabase.SaveChanges();
+                        }
+                    }
+                    foreach (var file in Images)
+                    {
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(file.FileName)), FileMode.Create);
+
+                        file.CopyToAsync(FileStream);
+                        var ImageURL = "\\Uploads\\" + Path.GetFileName(file.FileName);
+
+                        MissionMedium missionMedium = new MissionMedium();
+                       
+                        missionMedium.MediaPath = ImageURL;
+                        missionMedium.MediaName = mission.Title;
+                        missionMedium.MediaType = "IMG";
+                        newMission.MissionMedia.Add(missionMedium);
+                        FileStream.Close();
+                    }
+                }
+                if (MissionVideoURL != null)
+                {
+                    var oldmedia = _cidatabase.MissionMedia.Where(m => m.MissionId == mission.MissionId && m.MediaType == "URL").ToList();
+                    if (oldmedia.Count() > 0)
+                    {
+                        foreach (var item in oldmedia)
+                        {
+                            _cidatabase.Remove(item);
+                            _cidatabase.SaveChanges();
+                        }
+                    }
+               
+
+                        MissionMedium missionMedium = new MissionMedium();
+                      
+                        missionMedium.MediaPath = MissionVideoURL;
+                        missionMedium.MediaName = mission.Title;
+                        missionMedium.MediaType = "URL";
+
+                    newMission.MissionMedia.Add(missionMedium);
+
+                }
+                if (SkillList.Count() > 0)
+                {
+                    foreach (var item in SkillList)
+                    {
+                        MissionSkill skill = new MissionSkill();
+                        skill.SkillId = item;
+                        newMission.MissionSkills.Add(skill);
+                    }
+
+                }
+                if (Documents.Count != 0)
+                {
+                    var oldmedia = _cidatabase.MissionDocuments.Where(m => m.MissionId == mission.MissionId).ToList();
+                    if (oldmedia.Count() > 0)
+                    {
+                        foreach (var item in oldmedia)
+                        {
+                            _cidatabase.Remove(item);
+                            _cidatabase.SaveChanges();
+                        }
+                    }
+
+                    foreach (var file in Documents)
+                    {
+
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(file.FileName)), FileMode.Create);
+
+                        file.CopyToAsync(FileStream);
+                        var DocsURL = "\\Uploads\\" + Path.GetFileName(file.FileName);
+
+                        MissionMedium missionMedium = new MissionMedium();
+                   
+                        missionMedium.MediaPath = DocsURL;
+                        missionMedium.MediaName = mission.Title;
+                        missionMedium.MediaType = "DOC";
+                        newMission.MissionMedia.Add(missionMedium);
+                        FileStream.Close();
+                    }
+                }
+                _cidatabase.Update(newMission);
+                _cidatabase.SaveChanges();
+
+            }
+            return true;
+        }
+
+
+
         public bool DeleteMission(long MissionId)
         {
             var mission = _cidatabase.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault();
@@ -387,12 +518,20 @@ namespace CIPlatformMain.Repository
             }
         }
 
-        public bool EditSkill(long SkillId, string SkillName)
+        public bool EditSkill(long SkillId, string SkillName,int SkillStatus)
         {
             var skill = _cidatabase.Skills.Where(s => s.SkillId == SkillId).FirstOrDefault();
             if (skill != null)
             {
                 skill.SkillName = SkillName;
+                if (SkillStatus == 0)
+                {
+                    skill.Status = 0;
+                }
+                else
+                {
+                    skill.Status = 1;
+                }
                 skill.UpdatedAt = DateTime.Now;
                 _cidatabase.Update(skill);
                 _cidatabase.SaveChanges();

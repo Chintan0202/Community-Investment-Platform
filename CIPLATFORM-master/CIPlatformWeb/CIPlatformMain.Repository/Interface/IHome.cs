@@ -20,6 +20,8 @@ namespace CIPlatformMain.Repository.Interface
 
         bool Contact_us(long user_id, string Subject, string Message);
 
+        bool MissionApplication(long MissionId,long UserId);
+
 
     }
 }
