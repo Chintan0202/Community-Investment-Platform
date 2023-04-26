@@ -27,10 +27,16 @@ namespace CIPlatformMain.Controllers
             return View();
         }
 
+        public IActionResult TestStory(string description,string name,List<IFormFile> preloaded ,List<IFormFile> images)
+        {
+            return RedirectToAction("StoryListPage");
+        }
+
         public JsonResult GetStory(long MissionId)
         {
             var userid = long.Parse(HttpContext.Session.GetString("UserID"));
-            Story story=_cidatabase.Stories.Where(s=>s.MissionId == MissionId && s.UserId==userid && s.Status=="DRAFT").FirstOrDefault();
+            var storydata = _istory.GetStoryData();
+            Story story= storydata.story.Where(s=>s.MissionId == MissionId && s.UserId==userid && s.Status=="DRAFT").FirstOrDefault();
             
             
             if (story != null)
@@ -120,15 +126,6 @@ namespace CIPlatformMain.Controllers
         public IActionResult ShareYourStory()
         {
 
-            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
-
-           // ViewData["UserAvatar"] = _cidatabase.Users.Where(u => u.UserId == long.Parse(HttpContext.Session.GetString("UserID"))).Select(u => u.Avatar).FirstOrDefault();
-
-          //  ViewData["Name"] = HttpContext.Session.GetString("Username");
-            
-            ViewData["Mis"]=_cidatabase.Missions.ToList();  
-            ViewData["Missions"] = _cidatabase.MissionApplications.Where(m=> m.UserId==userid && m.DeletedAt==null).ToList();
-         
             return View();
         }
 

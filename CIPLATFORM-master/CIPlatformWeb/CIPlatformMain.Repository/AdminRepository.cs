@@ -47,10 +47,11 @@ namespace CIPlatformMain.Repository
             Data.UserSkill = _cidatabase.UserSkills.ToList();
             Data.MissionApplications = _cidatabase.MissionApplications.Where(a => a.ApprovalStatus == "PENDING" && a.DeletedAt == null).ToList();
             Data.Missions = _cidatabase.Missions.ToList();
-            Data.Themes = _cidatabase.MissionThemes.ToList();
+            Data.Themes = _cidatabase.MissionThemes.Where(t => t.DeletedAt == null).ToList();
             Data.Stories = _cidatabase.Stories.Where(s => s.Status == "DRAFT").ToList();
             Data.AllstoryMedia = _cidatabase.StoryMedia.ToList();
             Data.cmsPages = _cidatabase.CmsPages.Where(p => p.DeletedAt == null).ToList();
+            Data.Banner = _cidatabase.Banners.ToList();
 
             return Data;
         }
@@ -621,6 +622,24 @@ namespace CIPlatformMain.Repository
                 return false;
             }
         }
+        
+        public bool DeleteTheme(long ThemeId)
+        {
+            MissionTheme theme = _cidatabase.MissionThemes.Where(t => t.MissionThemeId == ThemeId).FirstOrDefault();
+            if (theme != null)
+            {
+                theme.DeletedAt = DateTime.Now;
+                theme.Status = 0;
+                _cidatabase.Update(theme);
+                _cidatabase.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void AddCMSPage(CmsPage cmsPage)
         {
             _cidatabase.Add(cmsPage);
@@ -659,6 +678,117 @@ namespace CIPlatformMain.Repository
 
         }
 
+        public Banner GetBanner(long BannerId)
+        {
+            try
+            {
+                 Banner banner = _cidatabase.Banners.Where(b => b.BannerId == BannerId).FirstOrDefault();
+                    return banner;
+               
+            }
+            catch(Exception ex)
+
+            {
+                return null;
+                Console.WriteLine($"Processing failed: {ex.Message}");
+            }
+
+        }
+
+        public bool DeleteBanner(long BannerId)
+        {
+            if (BannerId != null)
+            {
+                Banner banner=_cidatabase.Banners.Where(b=>b.Equals(BannerId)).FirstOrDefault();
+                if (banner != null)
+                {
+                    banner.DeletedAt= DateTime.Now;
+                    _cidatabase.Update(banner);
+                    _cidatabase.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+       public  bool AddBanner(Banner banner, IFormFile BannerImage)
+        {
+            try
+            {
+                if (banner != null)
+                {
+                    Banner Banner = new Banner();
+                    Banner.Text = banner.Text;
+                    Banner.SortOrder = banner.SortOrder;
+                    if (BannerImage != null)
+                    {
+
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(BannerImage.FileName)), FileMode.Create);
+
+                        BannerImage.CopyToAsync(FileStream);
+                        var ImageURL = "\\Uploads\\" + Path.GetFileName(BannerImage.FileName);
+                        Banner.Image = ImageURL;
+
+                        FileStream.Close();
+                    }
+                    _cidatabase.Add(Banner);
+                    _cidatabase.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool EditBanner(long BannerId, Banner banner, IFormFile BannerImage)
+        {
+            if (BannerId != null)
+            {
+                var Banner = _cidatabase.Banners.Where(b => b.BannerId== BannerId).FirstOrDefault();
+                if (Banner != null)
+                {
+                    Banner.SortOrder = banner.SortOrder;
+                    Banner.Text = banner.Text;
+                    if (BannerImage != null)
+                    {
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(BannerImage.FileName)), FileMode.Create);
+
+                        BannerImage.CopyToAsync(FileStream);
+                        var ImageURL = "\\images\\" + Path.GetFileName(BannerImage.FileName);
+                        Banner.Image= ImageURL;
+
+                        FileStream.Close();
+                    }
+                  
+                    _cidatabase.Update(Banner);
+                    _cidatabase.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

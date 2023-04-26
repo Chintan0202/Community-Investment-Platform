@@ -57,6 +57,27 @@ namespace CIPlatformMain.Controllers
             if (userid != null)
             {
                 int status = _iuser.UpdateUser(_user, cityid, countryid, userid ,Avatar);
+                if (status == 1)
+                {
+                    if (_user.User.FirstName != null)
+                    {
+                        HttpContext.Session.SetString("Username", _user.User.FirstName);
+                    }
+                  
+                    if (Avatar != null)
+                    {
+                        FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(Avatar.FileName)), FileMode.Create);
+
+                        Avatar.CopyToAsync(FileStream);
+                        var ImageURL = "\\Uploads\\" + Path.GetFileName(Avatar.FileName);
+
+                        HttpContext.Session.SetString("UserAvatar", ImageURL);
+
+                        FileStream.Close();
+
+                    }
+                  
+                }
             }
 
             return RedirectToAction("EditProfile");

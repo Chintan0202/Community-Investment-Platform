@@ -42,7 +42,7 @@
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -92,7 +92,7 @@
             <div class="row">
                 @foreach (var mission in Model.Missions)
                 {
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 mb-3 shadow-sm shadow" id="card-list">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 mb-3 shadow-sm shadow px-1" id="card-list">
                         <div class="mission-img">
 
                             @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
@@ -169,7 +169,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body p-1 ms-2">
+                        <div class="card-body">
                             <h5 class="card-title">@mission.Title</h5>
                             <p class="card-text">@mission.ShortDescription</p>
                             <div class="d-flex justify-content-between">
@@ -285,7 +285,7 @@
                                                 @if (acchivedgoal < i.GoalValue)
                                                 {
                                                     <div class="ms-3">
-                                                    <progress value=@acchivedgoal max=@i.GoalValue></progress>
+                                                        <progress  value=@acchivedgoal max=@i.GoalValue></progress>
 
                                                     <p class="mb-4">@i.GoalObjectiveText</p>
                                                     </div>
@@ -629,11 +629,16 @@
               $(".city-drop input:checkbox:checked").map(function () {
                   cities.push($(this).val());
                   
-              })
+              });
+            $(".skill-drop input:checkbox:checked").map(function () {
+                skills.push($(this).val());
+
+            })
               var filters = searchIDs.join('');
               var cityfilters = cities.join('');
               var themesfilters = theme.join('');
               var countryfilters=countries.join('');
+              var skillfilteers=skills.join('');
               console.log(countryfilters);
               count = 0;
 
@@ -648,7 +653,8 @@
                       countryfilter:countryfilters,
                       sortby: sortid,
                       searchin: searchinput,
-                      pg:jpg
+                      pg:jpg,
+                      skillfilter:skillfilteers
                   },
                   success: function (data) {
 

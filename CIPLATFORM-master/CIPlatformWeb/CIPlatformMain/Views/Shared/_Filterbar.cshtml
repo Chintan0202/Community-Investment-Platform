@@ -88,8 +88,8 @@
                         @foreach (var s in Model.Skills)
                         {
                             <li>
-                                <a class="dropdown-item" href="#">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <a class="dropdown-item skill-drop">
+                                    <input class="form-check-input" type="checkbox" value="@s.SkillName" id="flexCheckDefault" onchange="filter()">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         @s.SkillName
                                     </label>
@@ -183,8 +183,8 @@
                     @foreach (var s in Model.Skills)
                     {
                         <li>
-                            <a class="dropdown-item" href="#">
-                                <input class="form-check-input" type="checkbox" value=" @s.SkillName" id="flexCheckDefault" onchange="filter()">
+                            <a class="dropdown-item skill-drop">
+                                <input class="form-check-input" type="checkbox" value="@s.SkillName" id="flexCheckDefault" onchange="filter()">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     @s.SkillName
                                 </label>

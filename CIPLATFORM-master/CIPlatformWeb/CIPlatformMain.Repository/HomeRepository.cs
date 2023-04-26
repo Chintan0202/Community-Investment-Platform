@@ -140,7 +140,7 @@ namespace CIPlatformMain.Repository
                 MissionApplication missionApplication = new MissionApplication();
             missionApplication.MissionId = MissionId;
             missionApplication.UserId = UserId;
-
+                missionApplication.AppliedAt = DateTime.Now;
             
                 Mission missionobj = _cidatabase.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault();
 

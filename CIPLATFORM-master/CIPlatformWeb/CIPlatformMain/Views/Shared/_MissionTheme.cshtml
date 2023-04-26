@@ -7,6 +7,20 @@
         display: none;
     }
 
+    .button-row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .start-btn {
+        margin-right: auto;
+    }
+
+    .end-btn {
+        display: flex;
+    }
+
+
     tr td {
         padding-top: 15px !important;
         padding-bottom: 15px !important;
@@ -19,14 +33,27 @@
 
 
 
-<div id="MissionApplication" class="container-fluid">
+<div class="container-fluid">
 
-    <h2>Mission Themes</h2>
+    <h2>Mission Theme</h2>
     <hr />
+   
 
+           
 
-        <input class="form-control m-3 col-4" id="ThemeTableSearch" type="search" placeholder="Search" aria-label="Search">
+    <div class="button-row mb-3">
+        <div class=" start-btn">
 
+            <input class="form-control me-2 " id="ThemeTableSearch" type="search" placeholder="Search" aria-label="Search">
+        </div>
+
+        <div class="end-btn">
+            <button class="btn btn-outline-warning rounded-pill px-3 py-0 me-2" onclick="DraftTheme()"><i class="bi bi-plus-lg "></i> <span class="btn-label">Add</span></button>
+
+        </div>
+    </div>
+            
+           
 <div class="table-responsiv-lg">
     <table id="ThemeTable" class="table " data-page-length='10'>
         <thead style="background-color:#F8F9FC">

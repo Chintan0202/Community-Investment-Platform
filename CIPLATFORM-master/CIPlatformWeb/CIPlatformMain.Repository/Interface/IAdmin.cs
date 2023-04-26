@@ -61,5 +61,15 @@ namespace CIPlatformMain.Repository.Interface
 
         bool EditTheme(string ThemeName, int Status, long ThemeId);
 
+        bool DeleteTheme(long ThemeId);
+
+        Banner GetBanner(long BannerId);
+
+        bool DeleteBanner(long BannerId);
+
+        bool AddBanner(Banner banner, IFormFile BannerImage);
+
+        bool EditBanner(long BannerId,Banner banner, IFormFile BannerImage);
+
     }
 }

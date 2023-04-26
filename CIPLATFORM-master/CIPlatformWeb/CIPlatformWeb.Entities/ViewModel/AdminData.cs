@@ -38,6 +38,10 @@ namespace CIPlatformMain.Entities.ViewModel
 
         public CmsPage? CmsPage { get; set; }  
 
+        public IEnumerable<Banner> Banner { get; set; }
+
+        public Banner bannerData { get; set; }
+
         public MissionTheme MissionTheme { get; set; }
 
 

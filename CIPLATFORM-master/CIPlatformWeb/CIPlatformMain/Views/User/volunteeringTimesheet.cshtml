@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary rounded-pill"
-                                            data-bs-dismiss="modal">
+                                            data-bs-dismiss="modal" onclick="EmptyModel()">
                                         Cancel
                                     </button>
                                     <input type="submit" class="btn btn-outline-warning rounded-pill"
@@ -251,7 +251,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary rounded-pill"
-                                            data-bs-dismiss="modal">
+                                            data-bs-dismiss="modal" onclick="EmptyModel()">
                                         Cancel
                                     </button>
                                     <button type="submit" class="btn btn-outline-warning rounded-pill">
@@ -462,7 +462,21 @@
                 });
 
     })
+    function EmptyModel() {
+        $('#Action').val('');
+        $('#GetMessageGoal').val('');
+        $('#GoalTimesheetId').val('');
+        $('#Goalselecttag').val('');
+       
+        $('#DateVolunteeredGoal').val('');
+        $('#GetHoursTime').val('');
+        $('#GetMinutesTime').val('');
+        $('#GetMessageTime').val('');
+        $('#TimesheetId').val('');
+        $('#select-tag').val('');
 
+        $('#DateVolunteered').val('');
+    }
 </script>
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields

@@ -144,8 +144,9 @@ $('#Addskills').on('click', function () {
     var selected = [];
     console.log($('.selected-list list'));
     $(".selected-list .list-group-item").map(function () {
-        selected.push($(this).val());
-       
+     
+        if (selected.includes($(this).val()) === false) selected.push($(this).val());
+        console.log(selected);
     });
     $.ajax({
         method: 'POST',

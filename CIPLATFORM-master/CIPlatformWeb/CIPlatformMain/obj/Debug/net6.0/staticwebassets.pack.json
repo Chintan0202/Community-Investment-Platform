@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\Uploads\\Animal-welfare-&-save-birds-campaign.png"
     },
     {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
+      "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png"
+    },
+    {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1 - Copy (2).png",
       "PackagePath": "staticwebassets\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1 - Copy (2).png"
     },
@@ -115,6 +119,10 @@
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login - Copy.png",
       "PackagePath": "staticwebassets\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login - Copy.png"
+    },
+    {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login.png",
+      "PackagePath": "staticwebassets\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login.png"
     },
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability.png",
@@ -249,6 +257,10 @@
       "PackagePath": "staticwebassets\\css\\Navigation.css"
     },
     {
+      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\css\\ShareYourStory.css",
+      "PackagePath": "staticwebassets\\css\\ShareYourStory.css"
+    },
+    {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\css\\StoryDetails.css",
       "PackagePath": "staticwebassets\\css\\StoryDetails.css"
     },
@@ -295,14 +307,6 @@
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\Animal-welfare-&-save-birds-campaign.png",
       "PackagePath": "staticwebassets\\images\\Animal-welfare-&-save-birds-campaign.png"
-    },
-    {
-      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy - Copy.png",
-      "PackagePath": "staticwebassets\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy - Copy.png"
-    },
-    {
-      "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
-      "PackagePath": "staticwebassets\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png"
     },
     {
       "Id": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png",

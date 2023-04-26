@@ -11,7 +11,7 @@ using MimeKit;
 using NuGet.Common;
 using System.Net.Mail;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
-using X.PagedList;
+
 using System.Drawing.Printing;
 using System.Drawing;
 using NuGet.Protocol;
@@ -155,19 +155,19 @@ namespace CIPlatformMain.Controllers
 
                 var mailbody = "<h1>Click link to reset password</h1><br><h2><a href='" + "https://localhost:7037/Home/ResetPassword?token=" + token + "'>Reset Password</a></h2>";
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("vasudedakiya3@gmail.com"));
+                email.From.Add(MailboxAddress.Parse("fake79318@gmail.com"));
                 email.To.Add(MailboxAddress.Parse(useremail));
                 email.Subject = "Reset Your Password";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailbody };
 
                 using var smtp = new SmtpClient();
                 smtp.Connect("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-                smtp.Authenticate("vasudedakiya3@gmail.com", "whdatdbclkgporxj");
+                smtp.Authenticate("fake79318@gmail.com", "nyephjtlldtnuxhq");
                 smtp.Send(email);
                 smtp.Disconnect(true);
 
 
-                ViewBag.EmailStatus = 1;
+              
                 return View();
 
             }
@@ -176,7 +176,7 @@ namespace CIPlatformMain.Controllers
         }
 
 
-        public IActionResult LandingPage(string searchin, string themefilter, string cityfilter, string countryfilter, int sortby, int pg = 1)//change here
+        public IActionResult LandingPage(string searchin, string themefilter, string cityfilter, string countryfilter,string skillfilter, int sortby, int pg = 1)//change here
         {
            
             
@@ -247,15 +247,19 @@ namespace CIPlatformMain.Controllers
 
 
                 }
+                if (skillfilter != null)
+                {
+                    missiondata.Missions = missiondata.Missions.Where(m => m.MissionSkills.Any(s => skillfilter.Contains(s.Skill.SkillName))).ToList();
+                }
 
-                ViewBag.Missionskills = (from n in missiondata.MissionSkills
-                                         join c in missiondata.Skills on n.SkillId equals c.SkillId
-                                         select new
-                                         {
-                                             c.SkillName,
-                                             n.MissionId
+                //ViewBag.Missionskills = (from n in missiondata.MissionSkills
+                //                         join c in missiondata.Skills on n.SkillId equals c.SkillId
+                //                         select new
+                //                         {
+                //                             c.SkillName,
+                //                             n.MissionId
 
-                                         }).ToArray();
+                //                         }).ToArray();
 
                 ViewData["MissionCount"] = missiondata.Missions.Count();
                 const int pageSize = 9;
@@ -301,76 +305,87 @@ namespace CIPlatformMain.Controllers
 
         public IActionResult Volunteering_Mission_Page(int missionid, string commenttext, int favvalue, int user_rating, int to_userid)
         {
-          
-            
-            
-            MissionDetails missiondetails = _ihome.GetMissionDetails(missionid);
-            
-            ViewBag.userid = int.Parse(HttpContext.Session.GetString("UserID"));
-           
 
-           
-            if (missionid > 0)
+            if (HttpContext.Session.GetString("UserID") != null)
             {
-                HttpContext.Session.SetString("Mission_ID", missionid.ToString());
+
+                MissionDetails missiondetails = _ihome.GetMissionDetails(missionid);
+
+                ViewBag.userid = int.Parse(HttpContext.Session.GetString("UserID"));
+
+
+
+                if (missionid > 0)
+                {
+                    HttpContext.Session.SetString("Mission_ID", missionid.ToString());
+                }
+
+                var userid = long.Parse(HttpContext.Session.GetString("UserID"));
+                if (HttpContext.Session.GetString("Mission_ID") != null)
+                {
+                    missionid = int.Parse(HttpContext.Session.GetString("Mission_ID"));
+                }
+
+
+                var ratingstatus = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid && r.UserId == long.Parse(HttpContext.Session.GetString("UserID"))).FirstOrDefault();
+
+
+
+
+                //Add Mission To Fav
+                ViewData["missionfav"] = _cidatabase.FavoriteMissions.Where(f => f.MissionId == missionid && f.UserId == userid).Count().ToString();
+
+
+                ViewBag.Userrating = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid && r.UserId == userid).Select(r => r.Rating).FirstOrDefault();
+
+
+
+
+
+
+                Mission objCategoryList2 = missiondetails.Mission.Where(m => m.MissionId == missionid).FirstOrDefault();
+
+
+                if (objCategoryList2 != null)
+                {
+                    var title = objCategoryList2.Title;
+                    var missiontheme = objCategoryList2.Theme.Title;
+                    var missioncity = objCategoryList2.City.Name;
+
+
+                    //missiondetails.RelatedMission = missiondetails.Mission.Where(m => m.Theme.Title.Contains(missiontheme) || m.Title.Contains(title) || m.City.Name.Contains(missioncity) && m.MissionId != missionid).Take(3).ToList();
+
+                }
+                ViewBag.skills = (from n in _cidatabase.MissionSkills
+                                  join c in _cidatabase.Skills on n.SkillId equals c.SkillId
+                                  where n.MissionId == missionid
+                                  select new
+                                  {
+                                      c.SkillName
+
+                                  }).ToArray();
+                ViewBag.Comment = (from n in _cidatabase.Comments
+                                   join c in _cidatabase.Users on n.UserId equals c.UserId
+                                   where n.MissionId == missionid
+                                   select new
+                                   {
+                                       c.Avatar,
+                                       c.FirstName,
+                                       n.CommentText,
+                                       n.CreatedAt
+                                   }).ToArray();
+
+                return View(missiondetails);
+
+            }
+            else
+            {
+
+                return RedirectToAction("Index");
             }
 
-            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
-            if (HttpContext.Session.GetString("Mission_ID") != null)
-            {
-                missionid = int.Parse(HttpContext.Session.GetString("Mission_ID"));
-            }
 
 
-            var ratingstatus = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid && r.UserId == long.Parse(HttpContext.Session.GetString("UserID"))).FirstOrDefault();
-
-          
-
-
-            //Add Mission To Fav
-            ViewData["missionfav"] = _cidatabase.FavoriteMissions.Where(f => f.MissionId == missionid && f.UserId == userid).Count().ToString();
-
-
-            ViewBag.Userrating = _cidatabase.MissionRatings.Where(r => r.MissionId == missionid && r.UserId == userid).Select(r => r.Rating).FirstOrDefault();
-
-            
-           
-
-
-
-            Mission objCategoryList2 = missiondetails.Mission.Where(m => m.MissionId == missionid).FirstOrDefault();
-
-
-            if (objCategoryList2 != null)
-            {
-                var title = objCategoryList2.Title;
-                var missiontheme = objCategoryList2.Theme.Title;
-                var missioncity = objCategoryList2.City.Name;
-
-
-                //missiondetails.RelatedMission = missiondetails.Mission.Where(m => m.Theme.Title.Contains(missiontheme) || m.Title.Contains(title) || m.City.Name.Contains(missioncity) && m.MissionId != missionid).Take(3).ToList();
-
-            }
-            ViewBag.skills = (from n in _cidatabase.MissionSkills
-                              join c in _cidatabase.Skills on n.SkillId equals c.SkillId
-                              where n.MissionId == missionid
-                              select new
-                              {
-                                  c.SkillName
-
-                              }).ToArray();
-            ViewBag.Comment = (from n in _cidatabase.Comments
-                               join c in _cidatabase.Users on n.UserId equals c.UserId
-                               where n.MissionId == missionid
-                               select new
-                               {
-                                   c.Avatar,
-                                   c.FirstName,
-                                   n.CommentText,
-                                   n.CreatedAt
-                               }).ToArray();
-
-            return View(missiondetails);
         }
 
         //To Add Mission To Favrouite

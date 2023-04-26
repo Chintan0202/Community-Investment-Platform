@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eh+tAkcmgrp0xZVorDZATC4jrs/6z0fBsiWPn4av8T0=",
+  "Hash": "J+CABTCS9ayPOyKf4ig+pfY3jqz2e9J4xrNGiQQaI9E=",
   "Source": "CIPlatformMain",
   "BasePath": "_content/CIPlatformMain",
   "Mode": "Default",
@@ -168,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\resetpage.css"
+    },
+    {
+      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\css\\ShareYourStory.css",
+      "SourceId": "CIPlatformMain",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
+      "BasePath": "_content/CIPlatformMain",
+      "RelativePath": "css/ShareYourStory.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\ShareYourStory.css"
     },
     {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\css\\site.css",
@@ -525,40 +542,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\cross.png"
-    },
-    {
-      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy - Copy.png",
-      "SourceId": "CIPlatformMain",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
-      "BasePath": "_content/CIPlatformMain",
-      "RelativePath": "images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy - Copy.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy - Copy.png"
-    },
-    {
-      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
-      "SourceId": "CIPlatformMain",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
-      "BasePath": "_content/CIPlatformMain",
-      "RelativePath": "images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png"
     },
     {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png",
@@ -3400,6 +3383,23 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\canvasjs.txt"
     },
     {
+      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
+      "SourceId": "CIPlatformMain",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
+      "BasePath": "_content/CIPlatformMain",
+      "RelativePath": "Uploads/CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity - Copy.png"
+    },
+    {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png",
       "SourceId": "CIPlatformMain",
       "SourceType": "Discovered",
@@ -3857,6 +3857,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login - Copy.png"
+    },
+    {
+      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login.png",
+      "SourceId": "CIPlatformMain",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
+      "BasePath": "_content/CIPlatformMain",
+      "RelativePath": "Uploads/Grow-Trees-On-the-path-to-environment-sustainability-login.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Grow-Trees-On-the-path-to-environment-sustainability-login.png"
     },
     {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\Uploads\\image.png",

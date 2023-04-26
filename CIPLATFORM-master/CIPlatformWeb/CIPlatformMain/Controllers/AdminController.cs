@@ -289,8 +289,17 @@ namespace CIPlatformMain.Controllers
 
         public IActionResult DraftTheme(long MissionThemeId)
         {
-            MissionTheme missionTheme = _iadmin.GetMissionTheme(MissionThemeId);
-            return Json(missionTheme);
+
+            if (MissionThemeId!=null)
+            {
+                MissionTheme missionTheme = _iadmin.GetMissionTheme(MissionThemeId);
+                return Json(missionTheme);
+            }
+            else
+            {
+                return Json("Add");
+            }
+          
         }
         
         public IActionResult AddEditTheme(string ThemeName, int Status, long ThemeId)
@@ -323,7 +332,20 @@ namespace CIPlatformMain.Controllers
             }
             return RedirectToAction("AdminPage");
         }
-
+        public IActionResult DeleteTheme(long MissionThemeId)
+        {
+            var status = _iadmin.DeleteTheme(MissionThemeId);
+            if (status == true)
+            {
+                TempData["DeleteStatus"] = 1;
+                return RedirectToAction("AdminPage");
+            }
+            else
+            {
+                TempData["DeleteStatus"] = null;
+                return RedirectToAction("AdminPage");
+            }
+        }
         public IActionResult AddUser()
         {
 
@@ -444,5 +466,77 @@ namespace CIPlatformMain.Controllers
         }
 
 
+       public IActionResult GetBannerList()
+        {
+            var Data = _iadmin.GetData();
+            return PartialView("_BannerManagment", Data);
+        }
+        public JsonResult DraftBanner(long BannerId)
+        {
+            try
+            {
+                if (BannerId != null)
+                {
+                    Banner banner = _iadmin.GetBanner(BannerId);
+                    if (banner != null)
+                    {
+                        return Json(banner);
+                    }
+                    else
+                    {
+                        return Json("Not Found");
+                    }
+                }
+                else
+                {
+                    return Json("NotFound");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Processing failed: {ex.Message}");
+                return Json("NotFound");
+            }
+        }
+
+        public IActionResult AddEditBanner(Banner BannerData, IFormFile BannerImage)
+        {
+            if (BannerData.BannerId != 0)
+            {
+                var BannerId = BannerData.BannerId;
+                var status=_iadmin.EditBanner(BannerId,BannerData, BannerImage);
+                if (status == true)
+                {
+
+                    TempData["BannerManagmentRediect"] = 1;
+                    return RedirectToAction("AdminPage");
+
+                }
+                else
+                {
+                    TempData["BannerManagmentRediect"] = null;
+                    return RedirectToAction("AdminPage");
+                }
+            }
+            else
+            {
+
+                var status = _iadmin.AddBanner(BannerData, BannerImage);
+                if (status == true)
+                {
+
+                    TempData["BannerManagmentRediect"] = 1;
+                    return RedirectToAction("AdminPage");
+
+                }
+                else
+                {
+                    TempData["BannerManagmentRediect"] = null;
+                    return RedirectToAction("AdminPage");
+                }
+            }
+
+          
+        }
     }
 }

@@ -68,7 +68,7 @@ if (TempData["DeleteStatus"]!=null)
                         <button class="nav-link text-left my-2" id="v-pills-Missionskill-tab" onclick="GetSkillsList()" data-bs-toggle="pill"  type="button" role="tab"><i class="bi bi-tools"></i>&nbsp; Mission Skills</button>
                         <button class="nav-link text-left my-2" id="MissionApplicationList" data-bs-toggle="pill" type="button" role="tab" onclick="GetMissionApplication()"><i class="bi bi-folder-fill"></i>&nbsp; Mission Application</button>
                         <button class="nav-link text-left my-2" onclick="GetStoryList()" data-bs-toggle="pill" type="button" role="tab"><i class="bi bi-bookmark-star-fill"></i>&nbsp; Story</button>
-                        <button class="nav-link text-left my-2" id="v-pills-Banner-tab" data-bs-toggle="pill" data-bs-target="#v-pills-Banner" type="button" role="tab" aria-controls="v-pills-Banner" aria-selected="false"><i class="bi bi-emoji-sunglasses"></i>&nbsp; Banner Management</button>
+                        <button class="nav-link text-left my-2" id="v-pills-Banner-tab" onclick="GetBannerList()" data-bs-toggle="pill" type="button" role="tab"><i class="bi bi-emoji-sunglasses"></i>&nbsp; Banner Management</button>
                     </div>
 
                 </div>
@@ -106,13 +106,22 @@ if (TempData["DeleteStatus"]!=null)
 <script src="~/js/Admin.js">
     </script>
 
-    @{
+@{
+    if (TempData["BannerManagmentRediect"] != null)
+    {
+
+        <script>
+            GetBannerList();
+        </script>
+      
+    }
     if (TempData["CMSPageRedirect"] != null)
     {
-        <script>
-            GetCMSList();
+        {
+            <script>
+                GetCMSList();
         </script>
-
+        }
     }
     else if (TempData["MissionListRedirect"] != null)
     {
@@ -123,10 +132,13 @@ if (TempData["DeleteStatus"]!=null)
             </script>
         }
     }
+  
     else
     {
-        <script>
-            GetUserData();
+        {
+            <script>
+                GetUserData();
         </script>
+        }
     }
 }

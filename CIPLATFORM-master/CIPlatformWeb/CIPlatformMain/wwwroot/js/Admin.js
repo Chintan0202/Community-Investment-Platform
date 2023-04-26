@@ -470,3 +470,56 @@ function AddEditTheme() {
         }
     });
 }
+function DeleteTheme(ThemeId) {
+    $.ajax({
+        url: '/Admin/DeleteTheme',
+        data: {
+            MissionThemeId: ThemeId
+        },
+        success: function (res) {
+            GetThemeList();
+        }
+    });
+}
+function GetBannerList() {
+
+    $('#UserList').removeClass('active-tab');
+   
+    $.ajax({
+        url: '/Admin/GetBannerList',
+
+        success: function (res) {
+
+
+            $("#DynamicDiv").html(res);
+
+            var BannerTable = new DataTable('#BannerTable', {
+
+                "lengthChange": false,
+                "ordering": false
+            });
+
+            $('#BannerTableSearch').keyup(function () {
+                BannerTable.search($(this).val()).draw();
+            });
+        }
+    });
+}
+function DraftBanner(Bannerid) {
+    $('#ThemeEdit').modal('show');
+    $.ajax({
+        url: '/Admin/DraftBanner',
+        data: {
+            BannerId: Bannerid
+        },
+        success: function (res) {
+            console.log(res);
+                 $('#BannerSort').val(res.sortOrder);
+            $('#BannerText').val(res.text);
+
+            $('#BannerId').val(res.bannerId);
+            $('#output').attr('src',res.image);
+            
+        }
+    });
+}
