@@ -1,375 +1,192 @@
 ﻿/*! Image Uploader - v1.2.3 - 26/11/2019
  * Copyright (c) 2019 Christian Bayer; Licensed MIT */
-
-
-let preloaded = [];
-
-$('.input-images-2').imageUploader({
-    preloaded: preloaded,
-    imagesInputName: 'photos',
-    preloadedInputName: 'old',
-    maxSize: 2 * 1024 * 1024,
-    maxFiles: 10
-});
-(function ($) {
-
-    $.fn.imageUploader = function (options) {
-
-        // Default settings
-        let defaults = {
-            preloaded: [],
-            imagesInputName: 'images',
-            preloadedInputName: 'preloaded',
-            label: 'Drag & Drop files here or click to browse',
-            extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg'],
-            mimes: ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'],
-            maxSize: undefined,
-            maxFiles: undefined,
-        };
-
-        // Get instance
-        let plugin = this;
-
-        // Will keep the files
-        let dataTransfer = new DataTransfer();
-
-        // The file input
-        let $input;
-
-        // Set empty settings
-        plugin.settings = {};
-
-        // Plugin constructor
-        plugin.init = function () {
-
-            // Define settings
-            plugin.settings = $.extend(plugin.settings, defaults, options);
-
-            // Run through the elements
-            plugin.each(function (i, wrapper) {
-
-                // Create the container
-                let $container = createContainer();
-
-                // Append the container to the wrapper
-                $(wrapper).append($container);
-
-                // Set some bindings
-                $container.on("dragover", fileDragHover.bind($container));
-                $container.on("dragleave", fileDragHover.bind($container));
-                $container.on("drop", fileSelectHandler.bind($container));
-
-                // If there are preloaded images
-                if (plugin.settings.preloaded.length) {
-
-                    // Change style
-                    $container.addClass('has-files');
-
-                    // Get the upload images container
-                    let $uploadedContainer = $container.find('.uploaded');
-
-                    // Set preloaded images preview
-                    for (let i = 0; i < plugin.settings.preloaded.length; i++) {
-                        $uploadedContainer.append(createImg(plugin.settings.preloaded[i].src, plugin.settings.preloaded[i].id, true));
-                    }
-
-                }
-
-            });
-
-        };
-
-        let createContainer = function () {
-
-            // Create the image uploader container
-            let $container = $('<div>', { class: 'image-uploader' });
-
-            // Create the input type file and append it to the container
-            $input = $('<input>', {
-                type: 'file',
-                id: plugin.settings.imagesInputName + '-' + random(),
-                name: plugin.settings.imagesInputName + '[]',
-                accept: plugin.settings.extensions.join(','),
-                multiple: ''
-            }).appendTo($container);
-
-            // Create the uploaded images container and append it to the container
-            let $uploadedContainer = $('<div>', { class: 'uploaded' }).appendTo($container),
-
-                // Create the text container and append it to the container
-                $textContainer = $('<div>', {
-                    class: 'upload-text'
-                }).appendTo($container),
-
-                // Create the icon and append it to the text container
-                $i = $('<i>', { class: 'iui-cloud-upload' }).appendTo($textContainer),
-
-                // Create the text and append it to the text container
-                $span = $('<span>', { text: plugin.settings.label }).appendTo($textContainer);
-
-
-            // Listen to container click and trigger input file click
-            $container.on('click', function (e) {
-                // Prevent browser default event and stop propagation
-                prevent(e);
-
-                // Trigger input click
-                $input.trigger('click');
-            });
-
-            // Stop propagation on input click
-            $input.on("click", function (e) {
-                e.stopPropagation();
-            });
-
-            // Listen to input files changed
-            $input.on('change', fileSelectHandler.bind($container));
-
-            return $container;
-        };
-
-
-        let prevent = function (e) {
-            // Prevent browser default event and stop propagation
-            e.preventDefault();
-            e.stopPropagation();
-        };
-
-        let createImg = function (src, id, preloaded) {
-
-            // Create the upladed image container
-            let $container = $('<div>', { class: 'uploaded-image' }),
-
-                // Create the img tag
-                $img = $('<img>', { src: src }).appendTo($container),
-
-                // Create the delete button
-                $button = $('<button>', { class: 'delete-image' }).appendTo($container),
-
-                // Create the delete icon
-                $i = $('<i>', { class: 'iui-close' }).appendTo($button);
-
-
-            // If the image is preloaded
-            if (preloaded) {
-
-                // Set a identifier
-                $container.attr('data-preloaded', true);
-
-                // Create the preloaded input and append it to the container
-                let $preloaded = $('<input>', {
-                    type: 'hidden',
-                    name: plugin.settings.preloadedInputName + '[]',
-                    value: id
-                }).appendTo($container)
-
-            } else {
-
-                // Set the index
-                $container.attr('data-index', id);
-
-            }
-
-            // Stop propagation on click
-            $container.on("click", function (e) {
-                // Prevent browser default event and stop propagation
-                prevent(e);
-            });
-
-            // Set delete action
-            $button.on("click", function (e) {
-
-                // Prevent browser default event and stop propagation
-                prevent(e);
-
-                // Get the parent element
-                let $parent = $container.parent();
-
-                // If is not a preloaded image
-                if ($container.data('preloaded') === true) {
-
-                    // Remove from preloaded array
-                    plugin.settings.preloaded = plugin.settings.preloaded.filter(function (p) {
-                        return p.id !== id;
-                    });
-
-                } else {
-
-                    // Get the image index
-                    let index = parseInt($container.data('index'));
-
-                    // Update other indexes
-                    $parent.find('.uploaded-image[data-index]').each(function (i, cont) {
-                        if (i > index) {
-                            $(cont).attr('data-index', i - 1);
+!(function (e) {
+    e.fn.imageUploader = function (t) {
+        let n,
+            i = {
+                preloaded: [],
+                imagesInputName: "images",
+                preloadedInputName: "preloaded",
+                label: "Drag & Drop files here or click to browse",
+                extensions: [".jpg", ".jpeg", ".png", ".gif", ".svg"],
+                mimes: ["image/jpeg", "image/png", "image/gif", "image/svg+xml"],
+                maxSize: void 0,
+                maxFiles: void 0,
+            },
+            a = this,
+            s = new DataTransfer();
+        (a.settings = {}),
+            (a.init = function () {
+                (a.settings = e.extend(a.settings, i, t)),
+                    a.each(function (t, n) {
+                        let i = o();
+                        if (
+                            (e(n).append(i),
+                                i.on("dragover", r.bind(i)),
+                                i.on("dragleave", r.bind(i)),
+                                i.on("drop", p.bind(i)),
+                                a.settings.preloaded.length)
+                        ) {
+                            i.addClass("has-files");
+                            let e = i.find(".uploaded");
+                            for (let t = 0; t < a.settings.preloaded.length; t++)
+                                e.append(
+                                    l(a.settings.preloaded[t].src, a.settings.preloaded[t].id, !0)
+                                );
                         }
                     });
-
-                    // Remove the file from input
-                    dataTransfer.items.remove(index);
-
-                    // Update input files
-                    $input.prop('files', dataTransfer.files);
-                }
-
-                // Remove this image from the container
-                $container.remove();
-
-                // If there is no more uploaded files
-                if (!$parent.children().length) {
-
-                    // Remove the 'has-files' class
-                    $parent.parent().removeClass('has-files');
-
-                }
-
             });
-
-            return $container;
-        };
-
-        let fileDragHover = function (e) {
-
-            // Prevent browser default event and stop propagation
-            prevent(e);
-
-            // Change the container style
-            if (e.type === "dragover") {
-                $(this).addClass('drag-over');
-            } else {
-                $(this).removeClass('drag-over');
-            }
-        };
-
-        let fileSelectHandler = function (e) {
-
-            // Prevent browser default event and stop propagation
-            prevent(e);
-
-            // Get the jQuery element instance
-            let $container = $(this);
-
-            // Get the files as an array of files
-            let files = Array.from(e.target.files || e.originalEvent.dataTransfer.files);
-
-            // Will keep only the valid files
-            let validFiles = [];
-
-            // Run through the files
-            $(files).each(function (i, file) {
-                // Run the validations
-                if (plugin.settings.extensions && !validateExtension(file)) {
-                    return;
-                }
-                if (plugin.settings.mimes && !validateMIME(file)) {
-                    return;
-                }
-                if (plugin.settings.maxSize && !validateMaxSize(file)) {
-                    return;
-                }
-                if (plugin.settings.maxFiles && !validateMaxFiles(validFiles.length, file)) {
-                    return;
-                }
-                validFiles.push(file);
-            });
-
-            // If there is at least one valid file
-            if (validFiles.length) {
-                // Change the container style
-                $container.removeClass('drag-over');
-
-                // Makes the upload
-                setPreview($container, validFiles);
-            } else {
-
-                // Update input files (it is now empty due to a default browser action)
-                $input.prop('files', dataTransfer.files);
-
-            }
-        };
-
-        let validateExtension = function (file) {
-
-            if (plugin.settings.extensions.indexOf(file.name.replace(new RegExp('^.*\\.'), '.')) < 0) {
-                alert(`The file "${file.name}" does not match with the accepted file extensions: "${plugin.settings.extensions.join('", "')}"`);
-
-                return false;
-            }
-
-            return true;
-        };
-
-        let validateMIME = function (file) {
-
-            if (plugin.settings.mimes.indexOf(file.type) < 0) {
-                alert(`The file "${file.name}" does not match with the accepted mime types: "${plugin.settings.mimes.join('", "')}"`);
-
-                return false;
-            }
-
-            return true;
-        };
-
-        let validateMaxSize = function (file) {
-
-            if (file.size > plugin.settings.maxSize) {
-                alert(`The file "${file.name}" exceeds the maximum size of ${plugin.settings.maxSize / 1024 / 1024}Mb`);
-
-                return false;
-            }
-
-            return true;
-
-        };
-
-        let validateMaxFiles = function (index, file) {
-
-            if ((index + dataTransfer.items.length + plugin.settings.preloaded.length) >= plugin.settings.maxFiles) {
-                alert(`The file "${file.name}" could not be added because the limit of ${plugin.settings.maxFiles} files was reached`);
-
-                return false;
-            }
-
-            return true;
-
-        };
-
-        let setPreview = function ($container, files) {
-
-            // Add the 'has-files' class
-            $container.addClass('has-files');
-
-            // Get the upload images container
-            let $uploadedContainer = $container.find('.uploaded'),
-
-                // Get the files input
-                $input = $container.find('input[type="file"]');
-
-            // Run through the files
-            $(files).each(function (i, file) {
-
-                // Add it to data transfer
-                dataTransfer.items.add(file);
-
-                // Set preview
-                $uploadedContainer.append(createImg(URL.createObjectURL(file), dataTransfer.items.length - 1), false);
-
-            });
-
-            // Update input files
-            $input.prop('files', dataTransfer.files);
-
-        };
-
-        // Generate a random id
-        let random = function () {
-            return Date.now() + Math.floor((Math.random() * 100) + 1);
-        };
-
-        this.init();
-
-        // Return the instance
-        return this;
+        let o = function () {
+            let t = e("<div>", { class: "image-uploader" });
+            n = e("<input>", {
+                type: "file",
+                id: a.settings.imagesInputName + "-" + h(),
+                name: a.settings.imagesInputName + "[]",
+                accept: a.settings.extensions.join(","),
+                multiple: "",
+            }).appendTo(t);
+            e("<div>", { class: "uploaded" }).appendTo(t);
+            let i = e("<div>", { class: "upload-text" }).appendTo(t);
+            e("<i>", { class: "iui-cloud-upload" }).appendTo(i),
+                e("<span>", { text: a.settings.label }).appendTo(i);
+            return (
+                t.on("click", function (e) {
+                    d(e), n.trigger("click");
+                }),
+                n.on("click", function (e) {
+                    e.stopPropagation();
+                }),
+                n.on("change", p.bind(t)),
+                t
+            );
+        },
+            d = function (e) {
+                e.preventDefault(), e.stopPropagation();
+            },
+            l = function (t, i, o) {
+                let l = e("<div>", { class: "uploaded-image" }),
+                    r =
+                        (e("<img>", { src: t }).appendTo(l),
+                            e("<button>", { class: "delete-image" }).appendTo(l));
+                e("<i>", { class: "iui-close" }).appendTo(r);
+                if (o) {
+                    l.attr("data-preloaded", !0);
+                    e("<input>", {
+                        type: "hidden",
+                        name: a.settings.preloadedInputName + "[]",
+                        value: i,
+                    }).appendTo(l);
+                } else l.attr("data-index", i);
+                return (
+                    l.on("click", function (e) {
+                        d(e);
+                    }),
+                    r.on("click", function (t) {
+                        d(t);
+                        let o = l.parent();
+                        if (!0 === l.data("preloaded"))
+                            a.settings.preloaded = a.settings.preloaded.filter(function (e) {
+                                return e.id !== i;
+                            });
+                        else {
+                            let t = parseInt(l.data("index"));
+                            o.find(".uploaded-image[data-index]").each(function (n, i) {
+                                n > t && e(i).attr("data-index", n - 1);
+                            }),
+                                s.items.remove(t),
+                                n.prop("files", s.files);
+                        }
+                        l.remove(),
+                            o.children().length || o.parent().removeClass("has-files");
+                    }),
+                    l
+                );
+            },
+            r = function (t) {
+                d(t),
+                    "dragover" === t.type
+                        ? e(this).addClass("drag-over")
+                        : e(this).removeClass("drag-over");
+            },
+            p = function (t) {
+                d(t);
+                let i = e(this),
+                    o = Array.from(t.target.files || t.originalEvent.dataTransfer.files),
+                    l = [];
+                e(o).each(function (e, t) {
+                    (a.settings.extensions && !g(t)) ||
+                        (a.settings.mimes && !c(t)) ||
+                        (a.settings.maxSize && !f(t)) ||
+                        (a.settings.maxFiles && !m(l.length, t)) ||
+                        l.push(t);
+                }),
+                    l.length
+                        ? (i.removeClass("drag-over"), u(i, l))
+                        : n.prop("files", s.files);
+            },
+            g = function (e) {
+                return (
+                    !(
+                        a.settings.extensions.indexOf(
+                            e.name.replace(new RegExp("^.*\\."), ".")
+                        ) < 0
+                    ) ||
+                    (alert(
+                        `The file "${e.name
+                        }" does not match with the accepted file extensions: "${a.settings.extensions.join(
+                            '", "'
+                        )}"`
+                    ),
+                        !1)
+                );
+            },
+            c = function (e) {
+                return (
+                    !(a.settings.mimes.indexOf(e.type) < 0) ||
+                    (alert(
+                        `The file "${e.name
+                        }" does not match with the accepted mime types: "${a.settings.mimes.join(
+                            '", "'
+                        )}"`
+                    ),
+                        !1)
+                );
+            },
+            f = function (e) {
+                return (
+                    !(e.size > a.settings.maxSize) ||
+                    (alert(
+                        `The file "${e.name}" exceeds the maximum size of ${a.settings.maxSize / 1024 / 1024
+                        }Mb`
+                    ),
+                        !1)
+                );
+            },
+            m = function (e, t) {
+                return (
+                    !(
+                        e + s.items.length + a.settings.preloaded.length >=
+                        a.settings.maxFiles
+                    ) ||
+                    (alert(
+                        `The file "${t.name}" could not be added because the limit of ${a.settings.maxFiles} files was reached`
+                    ),
+                        !1)
+                );
+            },
+            u = function (t, n) {
+                t.addClass("has-files");
+                let i = t.find(".uploaded"),
+                    a = t.find('input[type="file"]');
+                e(n).each(function (e, t) {
+                    s.items.add(t),
+                        i.append(l(URL.createObjectURL(t), s.items.length - 1), !1);
+                }),
+                    a.prop("files", s.files);
+            },
+            h = function () {
+                return Date.now() + Math.floor(100 * Math.random() + 1);
+            };
+        return this.init(), this;
     };
-
-}(jQuery));
+})(jQuery);

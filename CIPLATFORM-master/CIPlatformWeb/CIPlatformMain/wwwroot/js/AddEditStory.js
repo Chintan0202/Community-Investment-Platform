@@ -7,8 +7,10 @@ tinymce.init({
 
 const inputDiv = document.querySelector(".input-div")
 const input = document.querySelector("#StoryImages")
-const output = document.querySelector("output")
+const output = document.querySelector("#output")
+const output1 = document.querySelector("#output1")
 let imagesArray = []
+let ajaximagesArray = []
 
 
 
@@ -48,89 +50,106 @@ function deleteImage(index) {
     displayImages()
 }
 var formData = new FormData();
-    $('#MissionId').on('change', function () {
-       
-        $.ajax({
-            url: '/Story/GetStory',
-            data: {
-                MissionId :$('#MissionId').val()
-            },
-            success: function (res) {
+$('#MissionId').on('change', function () {
 
-                
-                              if (res == "NoStoryFound") {
-                                  console.log("hey");
-                                
-                                  $('#StoryTitle').val("");
-                                  tinymce.activeEditor.setContent("");
-                                  $('#StoryDate').val("");
-                                  output.innerHTML = "";
-                                  $('#StoryId').val("");
-                                  formData.append('StoryId', 0);
-                                }
-                              else {
-                                  res = JSON.parse(res);
-                                  console.log(res);
-                                  $('#StoryTitle').val(res.Title);
-                                  tinymce.activeEditor.setContent(res.Description);
-                                 
-                                  $('#StoryId').val(res.StoryId);
-                                  formData.append('StoryId', res.StoryId)
-                                  var date = res.CreatedAt.split('T')[0];
-                                  console.log(date);
-                                  $('#StoryDate').val(date);
-                                
-                                  for (var i = 0; i < res.StoryMedia.$values.length; i++) {
-                                      if (res.StoryMedia.$values[i].Type == "IMG") {
-                                          formData.append('savedImages', res.StoryMedia.$values[i].Path);
-                                      }
+    $.ajax({
+        url: '/Story/GetStory',
+        data: {
+            MissionId: $('#MissionId').val()
+        },
+        success: function (res) {
 
-                                  }
-                                
-                                  var savedImages = "";
-                                  for (var i = 0; i < res.StoryMedia.$values.length; i++) {
-                                      console.log(i);
-                                      
-                                      if (res.StoryMedia.$values[i].Type == "URL") {
-                                          $('#StoryVideoUrl').val(res.StoryMedia.$values[i].Path);
-                                      }
-                                      else {
-                                          savedImages += `<div class="image">
-                                                            <img src="${res.StoryMedia.$values[i].Path}" alt="image">
-                                                            <span onclick="deleteImage(${i+5})">&times;</span>
-                                                          </div>`
-
-                                          output.innerHTML = savedImages;
-                                      }
-                                  }
-
-                                  
-                                 
-                }
+            if (res == "NoStoryFound") {
+                console.log("hey");
+                $('#StoryVideoUrl').val("Enter Youtube URL");
+                $('#StoryTitle').val("");
+                tinymce.activeEditor.setContent("");
+                $('#StoryDate').val("");
+               
+                output1.innerHTML = "";
+                $('#StoryId').val("");
+                formData.append('StoryId', 0);
+               
             }
+            else {
+                res = JSON.parse(res);
+                console.log(res);
+                $('#StoryTitle').val(res.Title);
+                tinymce.activeEditor.setContent(res.Description);
 
-        })
+                $('#StoryId').val(res.StoryId);
+                formData.append('StoryId', res.StoryId)
+                var date = res.CreatedAt.split('T')[0];
+                console.log(date);
+                $('#StoryDate').val(date);
+
+                for (var i = 0; i < res.StoryMedia.$values.length; i++) {
+                    if (res.StoryMedia.$values[i].Type == "IMG") {
+                        formData.append('savedImages', res.StoryMedia.$values[i].Path);
+                    }
+
+                }
+
+
+                for (var i = 0; i < res.StoryMedia.$values.length; i++) {
+                    console.log(i);
+
+                    if (res.StoryMedia.$values[i].Type == "URL") {
+                        $('#StoryVideoUrl').val(res.StoryMedia.$values[i].Path);
+                    }
+                    else {
+                        ajaximagesArray.push(res.StoryMedia.$values[i].Path);
+                    }
+                }
+                console.log(ajaximagesArray)
+                displayajaxImages();
+            }
+        }
+
     })
+})
+var deleteimg = [];
+function displayajaxImages() {
+    let images = ""
+    ajaximagesArray.forEach((image, index) => {
+        images += `<div class="image">
+                <img src="${image}" alt="image">
+                <span onclick="deleteajaxImage(${index})">&times;</span>
+              </div>`
+    })
+    output1.innerHTML = images
+}
 
+function deleteajaxImage(index) {
+    deleteimg.push(ajaximagesArray[index]);
+    ajaximagesArray.splice(index, 1)
+
+    displayajaxImages()
+}
+
+console.log(deleteimg);
 
 function AddEditStory() {
 
- 
+
 
     var editor = tinymce.get('editor');
     var Description = editor.getContent();
     var files = imagesArray;
 
+    ajaximagesArray.forEach((image, index) => {
+        formData.append('Preloaded', image);
+    })
 
-    
-        MissionId= $('#MissionId').val()
-        StoryTitle= $('#StoryTitle').val()
-        StoryDescription= Description
-      
+
+    MissionId = $('#MissionId').val()
+    StoryTitle = $('#StoryTitle').val()
+    StoryDescription = Description
+
     StoryDate = $('#StoryDate').val()
     StoryUrl = $('#StoryVideoUrl').val()
 
-   
+
 
     formData.append('MissionId', MissionId);
     formData.append('StoryDescription', StoryDescription);
@@ -138,20 +157,29 @@ function AddEditStory() {
     formData.append('StoryTitle', StoryTitle);
     formData.append('StoryVideoURL', StoryUrl);
 
+
+
     var files = imagesArray;
     for (var i = 0; i < files.length; i++) {
         formData.append('StoryImages', files[i]);
     }
+    if (MissionId == 0 || StoryTitle == "" || StoryDate == "") {
+        alert("cant'enter emty data");
+        console.log("Canksdfn");
+    }
+    else {
 
-    $.ajax({
-        type:'POST',
-        url: '/Story/AddEditStoryPost',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-           
 
-        }
-    });
+        $.ajax({
+            type: 'POST',
+            url: '/Story/AddEditStoryPost',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+
+
+            }
+        });
+    }
 }

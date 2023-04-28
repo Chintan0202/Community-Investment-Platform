@@ -107,14 +107,7 @@ if (TempData["DeleteStatus"]!=null)
     </script>
 
 @{
-    if (TempData["BannerManagmentRediect"] != null)
-    {
-
-        <script>
-            GetBannerList();
-        </script>
-      
-    }
+ 
     if (TempData["CMSPageRedirect"] != null)
     {
         {
@@ -125,14 +118,20 @@ if (TempData["DeleteStatus"]!=null)
     }
     else if (TempData["MissionListRedirect"] != null)
     {
-        
         {
             <script>
                 GetMissionList();
             </script>
         }
     }
-  
+    else if (TempData["BannerManagmentRediect"] != null)
+    {
+
+        <script>
+            GetBannerList();
+        </script>
+      
+    }
     else
     {
         {

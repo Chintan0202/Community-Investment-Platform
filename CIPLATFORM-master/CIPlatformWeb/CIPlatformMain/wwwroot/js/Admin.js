@@ -54,7 +54,7 @@ function GetUserData() {
 
 }
 function GetCMSList() {
-    console.log("call");
+   
     $('#UserList').removeClass('active-tab');
     $.ajax({
         url: '/Admin/CMSList',
@@ -135,6 +135,7 @@ function DeleteCMS(CMSPageId) {
 function GetMissionApplication() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
+    $('#v-pills-Mission-tab').removeClass('active-tab');
 
     $.ajax({
         url: '/Admin/MissionApplicationList',
@@ -168,6 +169,7 @@ function GetMissionApplication() {
 function GetThemeList() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
+    $('#v-pills-Mission-tab').removeClass('active-tab');
     $.ajax({
         url: '/Admin/MissionThemeList',
 
@@ -191,6 +193,7 @@ function GetThemeList() {
 function GetSkillsList() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
+    $('#v-pills-Mission-tab').removeClass('active-tab');
     $.ajax({
         url: '/Admin/MissionSkillList',
 
@@ -258,6 +261,7 @@ function DeleteSkill(Skillid) {
 function GetStoryList() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
+    $('#v-pills-Mission-tab').removeClass('active-tab');
     $.ajax({
         url: '/Admin/StoryList',
 
@@ -280,7 +284,7 @@ function GetStoryList() {
 }
 function GetStoryDetails(storyid) {
   
-    $('#UserList').removeClass('active-tab');
+    
     $.ajax({
         url: '/Admin/StoryDetails',
         data: {
@@ -369,6 +373,8 @@ function DeclineStory(StoryId) {
 function GetMissionList() {
     $('#v-pills-CMS-tab').removeClass('active-tab');
     $('#UserList').removeClass('active-tab');
+
+   
     $.ajax({
         url: '/Admin/MissionList',
 
@@ -484,6 +490,7 @@ function DeleteTheme(ThemeId) {
 function GetBannerList() {
 
     $('#UserList').removeClass('active-tab');
+    $('#v-pills-Mission-tab').removeClass('active-tab');
    
     $.ajax({
         url: '/Admin/GetBannerList',

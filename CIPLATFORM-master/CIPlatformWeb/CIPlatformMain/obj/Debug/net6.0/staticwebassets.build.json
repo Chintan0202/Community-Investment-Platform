@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "J+CABTCS9ayPOyKf4ig+pfY3jqz2e9J4xrNGiQQaI9E=",
+  "Hash": "MA0fwdq+rZDLelTGdVsMW7B5ME6lxNoNbxw4y8M8UbM=",
   "Source": "CIPlatformMain",
   "BasePath": "_content/CIPlatformMain",
   "Mode": "Default",
@@ -901,6 +901,23 @@
       "OriginalItemSpec": "wwwroot\\images\\grid.png"
     },
     {
+      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability - Copy.png",
+      "SourceId": "CIPlatformMain",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
+      "BasePath": "_content/CIPlatformMain",
+      "RelativePath": "images/Grow-Trees-On-the-path-to-environment-sustainability - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability - Copy.png"
+    },
+    {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability.png",
       "SourceId": "CIPlatformMain",
       "SourceType": "Discovered",
@@ -916,6 +933,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability.png"
+    },
+    {
+      "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability-1 - Copy.png",
+      "SourceId": "CIPlatformMain",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\",
+      "BasePath": "_content/CIPlatformMain",
+      "RelativePath": "images/Grow-Trees-On-the-path-to-environment-sustainability-1 - Copy.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability-1 - Copy.png"
     },
     {
       "Identity": "C:\\Community Investment Platform\\CIPLATFORM-master\\CIPlatformWeb\\CIPlatformMain\\wwwroot\\images\\Grow-Trees-On-the-path-to-environment-sustainability-1.png",

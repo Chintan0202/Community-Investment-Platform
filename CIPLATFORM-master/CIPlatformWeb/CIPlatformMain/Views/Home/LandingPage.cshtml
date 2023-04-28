@@ -75,6 +75,7 @@
             <li value=3 class="dropdown-item sortvalue">ByStartDate</li>
             <li value=4 class="dropdown-item sortvalue">ByEndDate</li>
             <li value=5 class="dropdown-item sortvalue">Favrouites</li>
+            <li value=6 class="dropdown-item sortvalue">SeatsLeft</li>
 
         </ul>
         <div class="list me-4" id="list-icon1"><img src="~/images/list.png" /></div>
@@ -84,23 +85,26 @@
 
     <div id="card-refresh">
 
-        <div class="card-cont container-fluid w-75" id="card-cont">
+        <div class="card-cont container-fluid w-75 p-0" id="card-cont">
 
             <h4>Explore @ViewData["MissionCount"] Missions</h4>
             
 
             <div class="row">
+                @{
+                    var user = long.Parse(@Context.Session.GetString("UserID"));
+                }
                 @foreach (var mission in Model.Missions)
                 {
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 mb-3 shadow-sm shadow px-1" id="card-list">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 g-4" id="card-list">
                         <div class="mission-img">
 
-                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
+                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == user).FirstOrDefault() != null)
                             {
                                 <div class=" p-1 px-2" style="position:absolute;left:0px; top:5%; border-radius:0px 15px 15px 0px; background-color:forestgreen;">
                                     Applied
                                 </div>
-                            }@if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "PENDING" && a.UserId == ViewBag.userid).FirstOrDefault() != null)
+                            }@if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.ApprovalStatus == "PENDING" && a.UserId == user).FirstOrDefault() != null)
                             {
 
                                 <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; border-radius:0px 15px 15px 0px; background-color:grey;">
@@ -162,7 +166,7 @@
                             </div>
 
 
-                            <img src="@mission.MissionImg" class=" card-img-top  h-100 " alt="..." />
+                            <img src="@mission.MissionImg" class=" card-img-top" style="max-height:220px;" alt="..." />
 
                             <div id="mission-theme" class="rounded-pill text-center">
                                 <p class="mt-1 mb-1 ps-2 pe-2">@mission.Theme.Title</p>
@@ -171,7 +175,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title">@mission.Title</h5>
-                            <p class="card-text">@mission.ShortDescription</p>
+                            <p class="card-text text-truncate">@mission.ShortDescription</p>
                             <div class="d-flex justify-content-between">
                                 <div class="p-3">@mission.OrganizationName</div>
 
@@ -284,8 +288,14 @@
                                                var acchivedgoal = Model.Timesheets.Where(m => m.MissionId == mission.MissionId && m.Status == "APPROVED").Sum(t => t.Action);
                                                 @if (acchivedgoal < i.GoalValue)
                                                 {
-                                                    <div class="ms-3">
-                                                        <progress  value=@acchivedgoal max=@i.GoalValue></progress>
+                                                   <div class="ms-3">	
+                                                        @{	
+                                                            int progressbar_value = (int)((double)acchivedgoal / i.GoalValue * 100);	
+                                                        }	
+                                                      <div class="progress">	
+                                                           	
+                                                          <div class="progress-bar bg-warning" role="progressbar" style="width:  @progressbar_value%" ></div>	
+                                                        </div>
 
                                                     <p class="mb-4">@i.GoalObjectiveText</p>
                                                     </div>
@@ -307,7 +317,7 @@
                             </div>
                             <hr class="m-0" />
 
-                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.UserId == long.Parse(Context.Session.GetString("UserID"))).FirstOrDefault() != null)
+                            @if (Model.Application.Where(a => a.MissionId == mission.MissionId && a.UserId == user).FirstOrDefault() != null)
                             {
                                 <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@mission.MissionId"> <button type="button" class="btn btn-outline-warning rounded-pill apply-btn mt-2 mb-1">View Details</button></a>
                             }
@@ -334,13 +344,13 @@
                 <span hidden value="@i.MissionId"></span>
                 <div class="list-view-card">
                     <div class="mission-img">
-                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "APPROVED").FirstOrDefault() != null)
+                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "APPROVED" && a.UserId == user).FirstOrDefault() != null)
                         {
                             <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; background-color:green;">
                                 Applied
                             </div>
                         }
-                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "PENDING").FirstOrDefault() != null)
+                        @if (Model.Application.Where(a => a.MissionId == i.MissionId && a.ApprovalStatus == "PENDING" && a.UserId==user).FirstOrDefault() != null)
                         {
                             <div class=" p-1 px-2 rounded-end" style="position:absolute;left:0px; top:5%; background-color:grey;">
                                 Pending
@@ -481,10 +491,17 @@
                                                 @if (acchivedgoal < x.GoalValue)
                                                 {
                                                     <div class="">
-                                                        <progress value=@acchivedgoal max=@x.GoalValue></progress>
+                                                        @{
+                                                            int progressbar_value = (int)((double)acchivedgoal / x.GoalValue * 100);
+                                                        }
+                                                        <div class="progress">
 
-                                                        <p class="">@x.GoalObjectiveText</p>
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width:  @progressbar_value%"></div>
+                                                        </div>
+                                                      
                                                     </div>
+                                                    <p class="">@x.GoalObjectiveText</p>
+
                                                 }
                                                 else
                                                 {
@@ -525,7 +542,7 @@
                             @if (Model.Application.Where(a => a.MissionId == i.MissionId).FirstOrDefault() != null)
                             {
                                 <div class="">
-                                    <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@i.MissionId"><button class="btn btn-outline-primary rounded-pill">View Details</button></a>
+                                    <a asp-controller="Home" asp-action="Volunteering_Mission_Page" asp-route-missionid="@i.MissionId"><button class="btn btn-outline-warning rounded-pill">View Details</button></a>
                                 </div>
                             }
                             else

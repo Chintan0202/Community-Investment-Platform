@@ -53,7 +53,7 @@ namespace CIPlatformMain.Repository.Interface
 
         bool AddMission(Mission mission, List<IFormFile> Images,IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList);
 
-        bool EditMission(Mission mission, List<IFormFile> Images, IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList);
+        bool EditMission(Mission mission, List<IFormFile> Images, IFormFile DefaultImage, List<IFormFile> Documents, string MissionVideoURL, List<int> SkillList, string[] PreloadedImages);
 
 
         MissionTheme GetMissionTheme(long MissionThemeId);
@@ -70,6 +70,8 @@ namespace CIPlatformMain.Repository.Interface
         bool AddBanner(Banner banner, IFormFile BannerImage);
 
         bool EditBanner(long BannerId,Banner banner, IFormFile BannerImage);
+
+        IEnumerable<MissionMedium> GetMissionMedia(long MissionId);
 
     }
 }

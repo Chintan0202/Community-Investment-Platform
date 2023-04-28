@@ -258,6 +258,7 @@ namespace CIPlatformMain.Controllers
         public IActionResult AddEditMission(long MissionId)
         {
             AddMission addMission = _iadmin.getMissionData();
+            
             if (MissionId != 0)
             {
                 addMission.Mission=addMission.Missions.Where(m=>m.MissionId==MissionId).FirstOrDefault();
@@ -269,12 +270,16 @@ namespace CIPlatformMain.Controllers
             return PartialView("_AddEditMission", addMission);
         }
         [HttpPost]
-        public IActionResult AddEditMission(Mission mission,List<IFormFile> MissionDocument, List<IFormFile> MissionPhotos, IFormFile DefualtMissionPhotos, String MissionVideoURL,List<int> SkillList)
+        public IActionResult AddEditMission(Mission mission,List<IFormFile> MissionDocument, List<IFormFile> MissionPhotos, List<IFormFile> MissionImages, IFormFile DefualtMissionPhotos, String MissionVideoURL,List<int> SkillList,string preloadedImages)
         {
 
             if (mission.MissionId != 0)
             {
-                var status=_iadmin.EditMission(mission, MissionPhotos, DefualtMissionPhotos, MissionDocument, MissionVideoURL, SkillList);
+
+                var PreloadedImages = preloadedImages.Split(',');
+
+                var status=_iadmin.EditMission(mission, MissionPhotos, DefualtMissionPhotos, MissionDocument, MissionVideoURL, SkillList, PreloadedImages);
+                TempData["MissionListRedirect"] = 1;
             }
             else
             {

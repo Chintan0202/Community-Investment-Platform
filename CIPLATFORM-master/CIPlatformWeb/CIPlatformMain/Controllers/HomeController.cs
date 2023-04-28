@@ -184,7 +184,7 @@ namespace CIPlatformMain.Controllers
             if (HttpContext.Session.GetString("UserID") != null)
             {
                 var UserId= long.Parse(HttpContext.Session.GetString("UserID"));
-                ViewBag.userid = UserId;
+               
                 var missiondata = _ihome.GetMissions(UserId);
 
                 
@@ -218,6 +218,12 @@ namespace CIPlatformMain.Controllers
                             missiondata.Missions = missiondata.Missions.Where(m => fav.Contains(m.MissionId)).ToList();
 
                             break;
+
+                        case 6:
+                            missiondata.Missions = missiondata.Missions.OrderByDescending(p => p.SeatsLeft).ToList();
+
+                            break;
+
 
 
 

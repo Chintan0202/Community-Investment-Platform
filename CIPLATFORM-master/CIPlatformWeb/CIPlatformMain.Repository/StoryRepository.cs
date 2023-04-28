@@ -85,7 +85,7 @@ namespace CIPlatformMain.Repository
             }
             return true;
         }
-        public bool EditStory(long StoryId,long UserId, long MissionId, string StoryDescription, DateTime StoryDate, string StoryTitle, List<IFormFile> StoryImages, string StoryVideoURL,List<string> SavedImages)
+        public bool EditStory(long StoryId,long UserId, long MissionId, string StoryDescription, DateTime StoryDate, string StoryTitle, List<IFormFile> StoryImages, string StoryVideoURL,List<string> Preloaded)
         {
             if (MissionId != null && StoryDate != null && UserId != null && StoryId!=null)
             {
@@ -100,14 +100,16 @@ namespace CIPlatformMain.Repository
                     newStory.Status = "DRAFT";
                     newStory.Description = StoryDescription;
 
+
+                    var oldmedia = _cidatabase.StoryMedia.Where(m => m.StoryId == StoryId).ToList();
+                    foreach (var item in oldmedia)
+                    {
+                        _cidatabase.Remove(item);
+                        _cidatabase.SaveChanges();
+                    }
                     if (StoryImages.Count() > 0)
                     {
-                        var oldmedia = _cidatabase.StoryMedia.Where(m => m.StoryId == StoryId && m.Type == "IMG").ToList();
-                        foreach(var item in oldmedia)
-                        {
-                            _cidatabase.Remove(item);
-                            _cidatabase.SaveChanges();
-                        }
+                       
                         
                         foreach (var file in StoryImages)
                         {
@@ -115,7 +117,7 @@ namespace CIPlatformMain.Repository
                             FileStream FileStream = new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", Path.GetFileName(file.FileName)), FileMode.Create);
 
                             file.CopyToAsync(FileStream);
-                            var ImageURL = "\\Uploads\\" + Path.GetFileName(file.FileName);
+                            var ImageURL = "\\images\\" + Path.GetFileName(file.FileName);
                             StoryMedium medias = new StoryMedium();
 
 
@@ -126,11 +128,10 @@ namespace CIPlatformMain.Repository
                             FileStream.Close();
                         }
                     }
-                    else
-                    {
-                        if (SavedImages.Count() > 0)
+                    
+                        if (Preloaded.Count() > 0)
                         {
-                            foreach (var item in SavedImages)
+                            foreach (var item in Preloaded)
                             {
                                 StoryMedium medias = new StoryMedium();
                                 medias.Path = item;
@@ -138,7 +139,8 @@ namespace CIPlatformMain.Repository
                                 newStory.StoryMedia.Add(medias);
                             }
                         }
-                    }
+                    
+
                     if (StoryVideoURL != null)
                     {
                         StoryMedium newStoryMedia = new StoryMedium();

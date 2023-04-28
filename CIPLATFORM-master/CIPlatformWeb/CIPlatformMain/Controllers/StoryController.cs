@@ -27,7 +27,7 @@ namespace CIPlatformMain.Controllers
             return View();
         }
 
-        public IActionResult TestStory(string description,string name,List<IFormFile> preloaded ,List<IFormFile> images)
+        public IActionResult TestStory(string description,string name,List<IFormFile> imagesInputName, List<IFormFile> preloadedInputName)
         {
             return RedirectToAction("StoryListPage");
         }
@@ -70,28 +70,41 @@ namespace CIPlatformMain.Controllers
 
         [HttpPost]
     
-        public IActionResult AddEditStoryPost(long StoryId,long MissionId,string StoryDescription,DateTime StoryDate,string StoryTitle,List<IFormFile> StoryImages,string StoryVideoURL ,List<string> savedImages)
+        public IActionResult AddEditStoryPost(long StoryId,long MissionId,string StoryDescription,DateTime StoryDate,string StoryTitle,List<IFormFile> StoryImages,string StoryVideoURL ,List<string> Preloaded)
         {
-            var userid = long.Parse(HttpContext.Session.GetString("UserID"));
-            var storydata = _istory.GetStoryData();
-            var story = storydata.story.Where(s => s.MissionId == MissionId && s.UserId == userid && s.Status == "DRAFT").FirstOrDefault();
-            if (story == null) {
-                if (StoryId == 0)
-                {
-                    var status = _istory.AddStory(userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL);
-                }
-                else
-                {
-                    var status = _istory.EditStory(StoryId,userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL,savedImages);
 
-                }
+
+
+            if (MissionId == 0 || StoryDate == null || StoryTitle == null)
+            {
+                TempData["EmptyField"] = 1;
+                return View();
             }
             else
             {
-                var status = _istory.EditStory(StoryId, userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL, savedImages);
+                TempData["EmptyField"] = null;
+                var userid = long.Parse(HttpContext.Session.GetString("UserID"));
+                var storydata = _istory.GetStoryData();
+                var story = storydata.story.Where(s => s.MissionId == MissionId && s.UserId == userid && s.Status == "DRAFT").FirstOrDefault();
+                if (story == null)
+                {
+                    if (StoryId == 0)
+                    {
+                        var status = _istory.AddStory(userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL);
+                    }
+                    else
+                    {
+                        var status = _istory.EditStory(StoryId, userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL, Preloaded);
+
+                    }
+                }
+                else
+                {
+                    var status = _istory.EditStory(StoryId, userid, MissionId, StoryDescription, StoryDate, StoryTitle, StoryImages, StoryVideoURL, Preloaded);
+                }
+
+                return View();
             }
-            
-            return View();
         }
         //To Show Stories
         public IActionResult StoryListPage(int pg = 1)
@@ -122,7 +135,7 @@ namespace CIPlatformMain.Controllers
             return View(storydata);
         }
 
-        [HttpGet]
+  
         public IActionResult ShareYourStory()
         {
 

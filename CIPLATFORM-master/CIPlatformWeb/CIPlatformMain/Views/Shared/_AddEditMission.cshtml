@@ -1,4 +1,69 @@
 ﻿@model CIPlatformMain.Entities.ViewModel.AddMission
+
+
+<style>
+    .input-div {
+        width: 100%;
+        height: 200px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border: 2px dotted black;
+        background-color: white;
+        position: relative;
+    }
+
+    .file {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    output {
+        width: 100%;
+        
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 15px;
+        position: relative;
+        border-radius: 5px;
+    }
+
+        output .image {
+            height: 150px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+            output .image img {
+                height: 100%;
+                width: 100%;
+            }
+
+            output .image span {
+                position: absolute;
+                top: -4px;
+                right: 4px;
+                cursor: pointer;
+                font-size: 22px;
+                color: white;
+            }
+
+                output .image span:hover {
+                    opacity: 0.8;
+                }
+
+        output .span--hidden {
+            visibility: hidden;
+        }
+</style>
 <h2 class="mt-3">Mission</h2>
 <hr />
 <button class="btn btn-outline-warning" onclick="GetMissionList()">Back To List</button>
@@ -103,7 +168,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
             <label for="TotalSeats" class="form-label">Total Seats</label>
-            <input type="text" asp-for="Mission.TotalSeats" class="form-control" id="TotalSeats" disabled />
+            <input type="text" asp-for="Mission.TotalSeats" class="form-control" id="TotalSeats"/>
 
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -152,19 +217,53 @@
     </div>
 
 
-    <div class="row mb-3">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="mb-3">
+       
             <label for="DefualtMissionPhoto" class="form-label">Default Mission Photos</label>
-            <input type="file" asp-for="Mission.MissionImg" name="DefualtMissionPhotos" class="form-control" id="DefualtMissionPhoto" required>
-            <div class="invalid-feedback">
-                Default Image Is required!
-            </div>
+            @if (Model.Mission != null)
+            {
+                <input type="file" name="DefualtMissionPhotos" placeholder="@Model.Mission.MissionImg.Substring(6,10)" class="form-control mb-2" id="DefualtMissionPhoto" onchange="loadFile(event)">
+                <img src="@Model.Mission.MissionImg" id="outputdefault" style="max-width:150px;max-height:150px;min-width:150px;min-height:150px;" />
+                
+            }
+            else
+            {
+                <input type="file" name="DefualtMissionPhotos" class="form-control mb-2" id="DefualtMissionPhoto" onchange="loadFile(event)" required>
+            <img src="" id="outputdefault" style="max-width:200px;max-height:180px;" alt="Upload Image Here" />
+                <div class="invalid-feedback">
+                    Default Image Is required!
+                </div>
+            }
+           
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <label for="MissionPhotos" class="form-label">Mission Photos</label>
-            <input type="file" name="MissionPhotos" class="form-control" id="MissionPhotos" multiple>
+        <div class="mb-3">
+            
+            <input hidden name="preloadedImages" id="preloadedImages"/>
+        <div class="input-div mt-3">
+            <p>Drag & drop photos here or <strong>Browse</strong></p>
+            <input type="file" id="MissionImages" class="file" name="MissionPhotos" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
         </div>
-    </div>
+       
+        @if (Model.Mission != null)
+        {
+            @if (Model.MissionMediums.Count() > 0)
+            {
+
+                @foreach (var item in Model.MissionMediums.Where(m => m.MediaType == "IMG"))
+                {
+                    <input hidden class="fillImage" value="@item.MediaPath" />
+                }
+
+
+            }
+        }
+        <output id="oldupload" class="m-2" ></output>
+        <output id="newupload" class="m-2"></output>
+            
+        
+            
+        </div>
+    
     <div class="mb-3">
         <label for="MissionAvability" class="form-label">Mission Avability</label>
         <input type="text" asp-for="Mission.Availability" class="form-control" id="MissionAvability">
@@ -180,6 +279,7 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <script>
+   
     tinymce.init({
         selector: '#editor',
         plugins: 'autolink lists link image charmap print preview',
@@ -209,12 +309,99 @@
     })()
 
     $('#typeselect').on('change', function () {
-        if ($('#typeselect').val() == "Time") {
-            $('#TotalSeats').removeAttr("disabled");
-            $('#Deadline').removeAttr("disabled");
+        if ($('#typeselect').val() == "Goal") {
+            $('#TotalSeats').addAttr("disabled");
+            $('#Deadline').addAttr("disabled");
 
         }
 
     });
+    var loadFile = function (event) {
+        var image = document.getElementById("outputdefault");
+        image.src = URL.createObjectURL(event.target.files[0]);
+        console.log(image);
+    };
 
+
+
+    const inputDiv = document.querySelector(".input-div")
+    const input = document.querySelector("#MissionImages")
+    const output = document.querySelector("#newupload")
+    const output1 = document.querySelector("#oldupload")
+    let imagesArray = []
+    let ajaximagesArray = []
+
+
+
+    input.addEventListener("change", () => {
+        const files = input.files
+        for (let i = 0; i < files.length; i++) {
+            imagesArray.push(files[i])
+        }
+        displayImages()
+    })
+
+    inputDiv.addEventListener("drop", () => {
+        e.preventDefault()
+        const files = e.dataTransfer.files
+        for (let i = 0; i < files.length; i++) {
+            if (!files[i].type.match("image")) continue;
+
+            if (imagesArray.every(image => image.name !== files[i].name))
+                imagesArray.push(files[i])
+        }
+        displayImages()
+    })
+    function displayImages() {
+        let images = ""
+        imagesArray.forEach((image, index) => {
+            images += `<div class="image">
+                        <img src="${URL.createObjectURL(image)}" alt="image"  style="max-width:200px;max-height:180px;min-width:150px;min-height:150px;">
+                    <span onclick="deleteImage(${index})">&times;</span>
+                  </div>`
+        })
+        output.innerHTML = images
+    }
+
+    function deleteImage(index) {
+        imagesArray.splice(index, 1)
+        
+        displayImages()
+    }
+   
+    function ajaximagefill() {
+
+        var missionImages = $('.fillImage');
+        for (var i = 0; i < missionImages.length; i++) {
+            ajaximagesArray.push($(missionImages[i]).val());
+        }
+        console.log(ajaximagesArray);
+    }
+    ajaximagefill()
+    displayajaxImages()
+
+    function displayajaxImages() {
+        let images = ""
+        ajaximagesArray.forEach((image, index) => {
+            images += `<div class="image">
+                        <img src="${image}" alt="image"  style="max-width:200px;max-height:180px;min-width:150px;min-height:150px;">
+                        <span onclick="deleteajaxImage(${index})">&times;</span>
+                  </div>`
+        })
+        output1.innerHTML = images
+        var imagestring=ajaximagesArray.join(',');
+        $('#preloadedImages').val(imagestring);
+        console.log(ajaximagesArray);
+    }
+    
+    function deleteajaxImage(index) {
+  
+        ajaximagesArray.splice(index, 1)
+      
+        displayajaxImages()
+    }
+
+    
+   
+    
 </script>
